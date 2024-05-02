@@ -67,8 +67,6 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@id/barrierBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,17 +80,15 @@
         android:orientation="horizontal"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="content"
-        app:layout_constraintGuide_begin="286dp" />
+        app:layout_constraintGuide_begin="270dp" />
 
     <ImageButton
         android:id="@+id/likes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
         android:importantForAccessibility="no"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/barrierLike"
         app:layout_constraintTop_toTopOf="@+id/barrierBottom"
         app:srcCompat="@drawable/ic_launcher_like_foreground" />
 
@@ -100,11 +96,9 @@
         android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
         android:importantForAccessibility="no"
-        app:layout_constraintStart_toEndOf="@+id/countLikes"
+        app:layout_constraintStart_toEndOf="@id/barrierShare"
         app:layout_constraintTop_toTopOf="@+id/barrierBottom"
         app:srcCompat="@drawable/ic_launcher_share_foreground" />
 
@@ -112,12 +106,10 @@
         android:id="@+id/visibiluty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
         android:importantForAccessibility="no"
+        app:layout_constraintStart_toStartOf="@id/barrierVisibility"
         app:layout_constraintTop_toTopOf="@+id/barrierBottom"
-        app:layout_constraintEnd_toStartOf="@id/countVisibility"
         app:srcCompat="@drawable/ic_launcher_visibility_foreground"
         tools:layout_editor_absoluteX="266dp" />
 
@@ -125,19 +117,16 @@
         android:id="@+id/countLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/likes"
         app:layout_constraintStart_toEndOf="@+id/likes"
         app:layout_constraintTop_toTopOf="@+id/likes"
         app:layout_constraintVertical_bias="0.586"
-        app:layout_constraintVertical_chainStyle="spread"
         tools:text="10" />
 
     <TextView
         android:id="@+id/countSharing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/share"
         app:layout_constraintStart_toEndOf="@+id/share"
         app:layout_constraintTop_toTopOf="@+id/share"
@@ -149,13 +138,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/visibiluty"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/visibiluty"
         app:layout_constraintTop_toTopOf="@+id/visibiluty"
         app:layout_constraintVertical_bias="0.586"
         tools:text="5" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/barrierLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="0dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/barrierShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="84dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/barrierVisibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="291dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
