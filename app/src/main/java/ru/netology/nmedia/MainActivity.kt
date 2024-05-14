@@ -5,21 +5,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlinx.android.synthetic.main.netology_main.author
-import kotlinx.android.synthetic.main.netology_main.content
-import kotlinx.android.synthetic.main.netology_main.countLikes
-import kotlinx.android.synthetic.main.netology_main.countSharing
+//import kotlinx.android.synthetic.main.netology_main.author
+//import kotlinx.android.synthetic.main.netology_main.content
+//import kotlinx.android.synthetic.main.netology_main.countLikes
+//import kotlinx.android.synthetic.main.netology_main.countSharing
 import ru.netology.nmedia.databinding.ActivityMainBinding
 
-import kotlinx.android.synthetic.main.netology_main.likes
-import kotlinx.android.synthetic.main.netology_main.published
-import kotlinx.android.synthetic.main.netology_main.share
+//import kotlinx.android.synthetic.main.netology_main.likes
+//import kotlinx.android.synthetic.main.netology_main.published
+//import kotlinx.android.synthetic.main.netology_main.share
+import ru.netology.nmedia.databinding.NetologyMainBinding
 
 class MainActivity : AppCompatActivity() {
 
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        val binding = NetologyMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val post = Post(
@@ -67,8 +68,8 @@ class MainActivity : AppCompatActivity() {
 
         }
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.post)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

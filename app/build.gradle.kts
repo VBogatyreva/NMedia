@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
 
     id ("kotlin-android")
-    id ("kotlin-android-extensions")
 
 }
 
