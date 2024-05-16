@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             if (post.likedByMe) {
                 likes.setImageResource(R.drawable.ic_launcher_liked_foreground)
             }
-            countLikes.text = post.likes.toString()
+
 
             likes.setOnClickListener {
                 post.likedByMe = !post.likedByMe
@@ -49,27 +49,22 @@ class MainActivity : AppCompatActivity() {
                 )
                 if (post.likedByMe) post.likes++ else post.likes--
                 countLikes.text = numberFormat(post.likes)
-                
-            }
+                println("Лайк")
 
-//            if (post.sharedByMe) {
-//                share.setImageResource(R.drawable.ic_launcher_share_foreground)
-//            }
-//            countSharing.text = post.shares.toString()
+            }
 
             share.setOnClickListener {
                 post.sharedByMe = !post.sharedByMe
                 post.shares++
                 countSharing.text = numberFormat(post.shares)
-
             }
 
             visibiluty.setOnClickListener{
                 post.sawByMe = !post.sawByMe
                 post.visibility++
                 countVisibility.text = numberFormat(post.visibility)
-
             }
+
         }
         enableEdgeToEdge()
 
