@@ -5,15 +5,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-//import kotlinx.android.synthetic.main.netology_main.author
-//import kotlinx.android.synthetic.main.netology_main.content
-//import kotlinx.android.synthetic.main.netology_main.countLikes
-//import kotlinx.android.synthetic.main.netology_main.countSharing
-import ru.netology.nmedia.databinding.ActivityMainBinding
-
-//import kotlinx.android.synthetic.main.netology_main.likes
-//import kotlinx.android.synthetic.main.netology_main.published
-//import kotlinx.android.synthetic.main.netology_main.share
 import ru.netology.nmedia.databinding.NetologyMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -31,41 +22,54 @@ class MainActivity : AppCompatActivity() {
             likedByMe = false,
             likes = 0,
             sharedByMe = false,
-            shares = 0
+            shares = 0,
+            sawByMe = false,
+            visibility = 0
+
         )
         with(binding) {
             author.text = post.author
             published.text = post.published
             content.text = post.content
 
+            countLikes.text = numberFormat(post.likes)
+            countSharing.text = numberFormat(post.shares)
+            countVisibility.text = numberFormat(post.visibility)
+
 
             if (post.likedByMe) {
-                likes?.setImageResource(R.drawable.ic_launcher_liked_foreground)
+                likes.setImageResource(R.drawable.ic_launcher_liked_foreground)
             }
-            countLikes?.text = post.likes.toString()
+            countLikes.text = post.likes.toString()
 
-            likes?.setOnClickListener {
+            likes.setOnClickListener {
                 post.likedByMe = !post.likedByMe
                 likes.setImageResource(
                     if (post.likedByMe) R.drawable.ic_launcher_liked_foreground else R.drawable.ic_launcher_like_foreground
                 )
                 if (post.likedByMe) post.likes++ else post.likes--
-                countLikes?.text = numberFormat(post.likes)
-
-
+                countLikes.text = numberFormat(post.likes)
+                
             }
 
-            if (post.sharedByMe) {
-                share?.setImageResource(R.drawable.ic_launcher_share_foreground)
-            }
-            countSharing?.text = post.shares.toString()
+//            if (post.sharedByMe) {
+//                share.setImageResource(R.drawable.ic_launcher_share_foreground)
+//            }
+//            countSharing.text = post.shares.toString()
 
-            share?.setOnClickListener {
+            share.setOnClickListener {
                 post.sharedByMe = !post.sharedByMe
                 post.shares++
-                countSharing?.text = numberFormat(post.shares)
+                countSharing.text = numberFormat(post.shares)
+
             }
 
+            visibiluty.setOnClickListener{
+                post.sawByMe = !post.sawByMe
+                post.visibility++
+                countVisibility.text = numberFormat(post.visibility)
+
+            }
         }
         enableEdgeToEdge()
 
@@ -84,7 +88,9 @@ class MainActivity : AppCompatActivity() {
         var likedByMe: Boolean,
         var likes: Int,
         var sharedByMe: Boolean,
-        var shares: Int
+        var shares: Int,
+        var sawByMe: Boolean,
+        var visibility: Int
     )
 }
 

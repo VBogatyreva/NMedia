@@ -15,12 +15,7 @@ package ru.netology.nmedia
 
             number in 10_000..999_999 -> {
                 val beforeDecimalPoint = number / 1_000
-                val afterDecimalPart = (number % 1_000) / 100
-                if (afterDecimalPart == 0) {
-                    String.format("%dK", beforeDecimalPoint)
-                } else {
-                    String.format("%d,%dK", beforeDecimalPoint, afterDecimalPart)
-                }
+                String.format("%dK", beforeDecimalPoint)
             }
 
             number in 1_000_000..99_999_999 -> {
@@ -34,6 +29,5 @@ package ru.netology.nmedia
             }
 
             else -> String.format("%.1fМ", number / 1_000_000.0)
-
         }
     }
