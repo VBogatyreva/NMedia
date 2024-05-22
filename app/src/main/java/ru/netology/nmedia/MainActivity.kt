@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.netology.nmedia.databinding.NetologyMainBinding
 
+
 // branch master
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +56,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
     data class Post(
         val id: Long,
         val author: String,
