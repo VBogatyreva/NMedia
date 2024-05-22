@@ -4,14 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-interface PostRepository {
-    fun get() : LiveData<MainActivity.Post>
-    fun like()
-    fun share()
-    fun saw()
-}
-
 class PostRepositoryInMemoryImpl : PostRepository {
+
 
     private var post = MainActivity.Post(
         id = 1,
@@ -48,12 +42,12 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = post
     }
 
-class PostViewModel (private val repository : PostRepository = PostRepositoryInMemoryImpl()) : ViewModel() {
+    class PostViewModel (private val repository : PostRepository = PostRepositoryInMemoryImpl()) : ViewModel() {
 
-    val data = repository.get()
-    fun like() = repository.like()
-    fun share() = repository.share()
-    fun saw() = repository.saw()
+        val data = repository.get()
+        fun like() = repository.like()
+        fun share() = repository.share()
+        fun saw() = repository.saw()
 
     }
 }
