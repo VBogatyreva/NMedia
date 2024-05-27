@@ -60,4 +60,6 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     implementation("androidx.activity:activity-ktx:1.9.0")
 
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
 }
