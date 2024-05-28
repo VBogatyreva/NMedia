@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.netology.nmedia.databinding.NetologyMainBinding
+import ru.netology.nmedia.databinding.CardPostBinding
 
 
 typealias OnLikeListener = (post : MainActivity.Post) -> Unit
@@ -21,7 +21,7 @@ class PostsAdapter(
 
 
     override fun onCreateViewHolder (parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = NetologyMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(binding, onLikeListener, onShareListener, onSawListener)
     }
 
@@ -32,7 +32,7 @@ class PostsAdapter(
 
 
     class PostViewHolder (
-        private val binding: NetologyMainBinding,
+        private val binding: CardPostBinding,
         private val onLikeListener: OnLikeListener,
         private val onShareListener: OnShareListener,
         private val onSawListener: OnSawListener

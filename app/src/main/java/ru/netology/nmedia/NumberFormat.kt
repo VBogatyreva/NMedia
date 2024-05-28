@@ -1,5 +1,4 @@
 package ru.netology.nmedia
-
     fun numberFormat(number: Long): String {
         return when {
             number < 1_000 -> number.toString()
