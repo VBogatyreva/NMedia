@@ -6,7 +6,7 @@
     android:id="@+id/card_post"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
+    android:layout_margin="10dp"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -165,6 +165,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             tools:text="5"
             />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
