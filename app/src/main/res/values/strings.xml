@@ -2,4 +2,11 @@
     <string name="app_name">NMedia</string>
     <string name="nmedia">NMedia!</string>
     <string name="no">no</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_remove">Remove</string>
+    <string name="text_edit">Edit Message</string>
+    <string name="post_text">Post Text</string>
+    <string name="text_post_save">Save</string>
+
+
 </resources>

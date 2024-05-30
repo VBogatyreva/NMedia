@@ -7,6 +7,9 @@ interface PostRepository {
     fun likeById(id:Long)
     fun shareById(id:Long)
     fun sawById(id:Long)
+    fun removeById(id:Long)
+    fun save(post:MainActivity.Post)
+    fun edit(post:MainActivity.Post)
 
 
 }
