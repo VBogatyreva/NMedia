@@ -11,5 +11,4 @@ interface PostRepository {
     fun save(post:MainActivity.Post)
     fun edit(post:MainActivity.Post)
 
-
 }

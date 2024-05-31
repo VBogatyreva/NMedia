@@ -8,14 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.databinding.CardPostBinding
 
-
 interface OnInteractionListener {
     fun onLike (post : MainActivity.Post) {}
     fun onEdit (post : MainActivity.Post) {}
     fun onRemove (post : MainActivity.Post) {}
     fun onShare (post : MainActivity.Post) {}
     fun onSaw (post : MainActivity.Post) {}
-
 }
 
 class PostsAdapter(
@@ -66,8 +64,6 @@ class PostsAdapter(
                     onInteractionListener.onSaw(post)
                 }
 
-
-
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
                         inflate(R.menu.options_post)
@@ -88,7 +84,6 @@ class PostsAdapter(
                 }
             }
         }
-
     }
 
     class PostDiffCallback : DiffUtil.ItemCallback<MainActivity.Post>() {
@@ -100,6 +95,4 @@ class PostsAdapter(
             return oldItem == newItem
         }
     }
-
-
 }

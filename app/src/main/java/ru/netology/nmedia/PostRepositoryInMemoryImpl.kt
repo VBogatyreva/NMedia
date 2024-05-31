@@ -93,6 +93,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
     }
 
     override fun removeById(id: Long) {
+
         posts = posts.filter { it.id != id }
         data.value = posts
     }
@@ -103,7 +104,6 @@ class PostRepositoryInMemoryImpl : PostRepository {
             if (it.id != post.id) it else it.copy(content = post.content)
         }
         data.value = posts
-
     }
 
     override fun save(post: MainActivity.Post) {

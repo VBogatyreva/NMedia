@@ -11,9 +11,18 @@ class PostViewModel (private val repository : PostRepository = PostRepositoryInM
     fun shareById(id: Long) = repository.shareById(id)
     fun sawById(id: Long) = repository.sawById(id)
     fun removeById(id:Long) = repository.removeById(id)
-
     fun edit(post : MainActivity.Post) {
         edited.value = post
+    }
+
+    fun cancel(content:String) {
+        edited.value?.let {
+            val text = content.trim()
+            if (it.content != text) {
+                return
+            }
+            edited.value = it.copy(content = text)
+        }
     }
 
     fun save() {

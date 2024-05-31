@@ -23,23 +23,18 @@ class MainActivity : AppCompatActivity() {
             override fun onLike(post: Post) {
                 viewModel.likeById(post.id)
             }
-
             override fun onShare(post: Post) {
                 viewModel.shareById(post.id)
             }
-
             override fun onSaw(post: Post) {
                 viewModel.sawById(post.id)
             }
-
             override fun onRemove(post: Post) {
                 viewModel.removeById(post.id)
             }
-
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
             }
-
         })
 
         binding.list.adapter = adapter
@@ -51,14 +46,12 @@ class MainActivity : AppCompatActivity() {
             with (binding.content) {
                 if (text.isNullOrBlank()) {
                     Toast.makeText (
-
                         this@MainActivity,
                         "Content can`t be empty",
                         Toast.LENGTH_SHORT
                     ).show()
                     return@setOnClickListener
                 }
-
                 viewModel.changeContent(text.toString())
                 viewModel.save()
 
@@ -77,7 +70,9 @@ class MainActivity : AppCompatActivity() {
             with(binding.content) {
                 requestFocus()
                 setText(post.content)
+                binding.group.visibility = View.VISIBLE
             }
+
         }
 
         binding.content.setOnClickListener{
@@ -86,6 +81,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.cancel.setOnClickListener {
             with(binding.content) {
+
+                viewModel.cancel(text.toString())
+                viewModel.save()
+
                 setText("")
                 clearFocus()
                 AndroidUnils.hideKeyboard(this)
