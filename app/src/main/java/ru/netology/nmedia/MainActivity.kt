@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.databinding.ActivityMainBinding
 
-// branch master 2.4. CRUD
+// branch master 3.1. Material Design
 
 class MainActivity : AppCompatActivity() {
 

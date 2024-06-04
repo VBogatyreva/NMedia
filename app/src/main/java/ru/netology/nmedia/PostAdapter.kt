@@ -44,13 +44,12 @@ class PostsAdapter(
                 published.text = post.published
                 content.text = post.content
 
-                countLikes.text = numberFormat(post.likes)
-                countSharing.text = numberFormat(post.shares)
-                countVisibility.text = numberFormat(post.visibility)
+                likes.text = numberFormat(post.likes)
+                share.text = numberFormat(post.shares)
+                visibiluty.text = numberFormat(post.visibility)
 
-                likes.setImageResource(
-                    if (post.likedByMe) R.drawable.ic_launcher_liked_foreground else R.drawable.ic_launcher_like_foreground
-                )
+                likes.isChecked = post.likedByMe
+                likes.text = "${post.likes}"
 
                 likes.setOnClickListener{
                     onInteractionListener.onLike(post)

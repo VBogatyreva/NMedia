@@ -13,7 +13,7 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="10dp">
 
 
         <ImageView
@@ -54,15 +54,15 @@
             tools:layout_editor_absoluteX="214dp"
             tools:text="@sample/assets.json/data/published" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/menu"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:importantForAccessibility="no"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_more_vert_24" />
+            app:icon="@drawable/baseline_more_vert_24"
+            style="@style/Widget.AppTheme.MenuButton" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierTop"
@@ -92,80 +92,39 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="content"/>
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="5dp"
-            android:background="@android:color/transparent"
-            android:importantForAccessibility="no"
+            android:checkable="true"
+            android:contentDescription="@string/like"
+            app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/barrierBottom"
-            app:srcCompat="@drawable/ic_launcher_like_foreground" />
+            tools:checked="@sample/assets.json/data/likedByMe"
+            tools:text="@sample/assets.json/data/likes"
+            style="@style/Widget.AppTheme.LikeButton" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@android:color/transparent"
-            android:importantForAccessibility="no"
-            app:layout_constraintStart_toEndOf="@id/countLikes"
+            android:contentDescription="@string/share"
+            app:icon="@drawable/ic_launcher_share_foreground"
+            app:layout_constraintStart_toEndOf="@id/likes"
             app:layout_constraintTop_toTopOf="@+id/barrierBottom"
-            app:srcCompat="@drawable/ic_launcher_share_foreground" />
+            tools:text="@sample/assets.json/data/shares"
+            style="@style/Widget.AppTheme.ShareButton" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/visibiluty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@android:color/transparent"
-            android:importantForAccessibility="no"
-            app:layout_constraintEnd_toStartOf="@id/countVisibility"
-            app:layout_constraintTop_toTopOf="@+id/barrierBottom"
-            app:srcCompat="@drawable/ic_launcher_visibility_foreground"
-            tools:layout_editor_absoluteX="266dp" />
-
-        <TextView
-            android:id="@+id/countLikes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/likes"
-            app:layout_constraintStart_toEndOf="@+id/likes"
-            app:layout_constraintTop_toTopOf="@+id/likes"
-            app:layout_constraintVertical_bias="0.586"
-            app:layout_constraintVertical_chainStyle="spread"
-            tools:text="10"
-            />
-
-        <TextView
-            android:id="@+id/countSharing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/share"
-            app:layout_constraintStart_toEndOf="@+id/share"
-            app:layout_constraintTop_toTopOf="@+id/share"
-            app:layout_constraintVertical_bias="0.586"
-            tools:text="5"
-            />
-
-        <TextView
-            android:id="@+id/countVisibility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/visibiluty"
+            app:icon="@drawable/ic_launcher_visibility_foreground"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/visibiluty"
-            app:layout_constraintVertical_bias="0.586"
-            app:layout_constraintHorizontal_bias="1.0"
-            tools:text="5"
-            />
-
+            app:layout_constraintTop_toTopOf="@+id/barrierBottom"
+            tools:text="@sample/assets.json/data/visibility"
+            style="@style/Widget.AppTheme.VisibilityButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
