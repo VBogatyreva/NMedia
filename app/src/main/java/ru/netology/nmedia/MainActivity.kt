@@ -1,64 +1,103 @@
 package ru.netology.nmedia
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.launch
 import androidx.activity.viewModels
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import ru.netology.nmedia.databinding.NetologyMainBinding
+import ru.netology.nmedia.activity.EditPostResultContract
+import ru.netology.nmedia.activity.NewPostResultContract
+import ru.netology.nmedia.databinding.ActivityMainBinding
 
-
-
-// branch master
-
+// branch master 3.1. Material Design
 
 class MainActivity : AppCompatActivity() {
 
-     override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = NetologyMainBinding.inflate(layoutInflater)
+
+        val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-         val viewModel : PostRepositoryInMemoryImpl.PostViewModel by viewModels()
-         viewModel.data.observe(this) { post ->
-             with(binding) {
-                 author.text = post.author
-                 published.text = post.published
-                 content.text = post.content
+        val viewModel: PostViewModel by viewModels()
 
-                 countLikes.text = numberFormat(post.likes)
-                 countSharing.text = numberFormat(post.shares)
-                 countVisibility.text = numberFormat(post.visibility)
-
-                 likes.setImageResource(
-                     if (post.likedByMe) R.drawable.ic_launcher_liked_foreground else R.drawable.ic_launcher_like_foreground
-                 )
-             }
-         }
-
-         binding.likes.setOnClickListener {
-             viewModel.like()
-         }
-
-         binding.share.setOnClickListener {
-             viewModel.share()
-         }
-
-         binding.visibiluty.setOnClickListener {
-             viewModel.saw()
-         }
-
-        enableEdgeToEdge()
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.post)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        val editPostLauncher = registerForActivityResult (EditPostResultContract()) { result ->
+            result?:return@registerForActivityResult
+            viewModel.changeContent(result)
+            viewModel.save()
         }
 
-    }
+        val adapter = PostsAdapter (object : OnInteractionListener {
+            override fun onLike(post: Post) {
+                viewModel.likeById(post.id)
+            }
+            override fun onShare(post: Post) {
+                viewModel.shareById(post.id)
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(intent, getString(R.string.share))
+                startActivity(shareIntent)
+            }
+            override fun onSaw(post: Post) {
+                viewModel.sawById(post.id)
+            }
+            override fun onRemove(post: Post) {
+                viewModel.removeById(post.id)
+            }
+            override fun onEdit(post: Post) {
+                viewModel.edit(post)
+                editPostLauncher.launch(post.content)
 
+            }
+
+            override fun onVideo(post : Post) {
+                post.videoUrl?.let {viewModel.video()}
+                if (!post.videoUrl.isNullOrEmpty()) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl))
+                    startActivity(intent)
+                }
+            }
+        })
+
+        binding.list.adapter = adapter
+        viewModel.data.observe(this) { posts ->
+            adapter.submitList(posts)
+        }
+
+        val newPostLauncher = registerForActivityResult (NewPostResultContract()) { result ->
+            result?:return@registerForActivityResult
+            viewModel.changeContent(result)
+            viewModel.save()
+        }
+
+        binding.fab.setOnClickListener {
+            newPostLauncher.launch()
+        }
+
+//        val editPostLauncher = registerForActivityResult (EditPostResultContract()) { result ->
+//            result?:return@registerForActivityResult
+//            viewModel.changeContent(result)
+//            viewModel.save()
+//        }
+
+
+
+//        viewModel.edited.observe(this) {
+//            if (it.id == 0L) {
+//                return@observe
+//            }
+//            editPostLauncher.launch(it.content)
+//        }
+
+    }
 
     data class Post(
         val id: Long,
@@ -66,12 +105,23 @@ class MainActivity : AppCompatActivity() {
         val published: String,
         val content: String,
         val likedByMe: Boolean,
-        var likes: Int,
+        val likes: Long,
         val sharedByMe: Boolean,
-        var shares: Int,
+        val shares: Long,
         val sawByMe: Boolean,
-        var visibility: Int
+        val visibility: Long,
+        val videoUrl: String?
     )
+}
+
+object AndroidUnils {
+    fun hideKeyboard (view : View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken,0)
+    }
+
+
+
 }
 
 
