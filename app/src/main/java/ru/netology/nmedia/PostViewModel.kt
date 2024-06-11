@@ -11,19 +11,20 @@ class PostViewModel (private val repository : PostRepository = PostRepositoryInM
     fun shareById(id: Long) = repository.shareById(id)
     fun sawById(id: Long) = repository.sawById(id)
     fun removeById(id:Long) = repository.removeById(id)
+    fun video() = repository.video()
     fun edit(post : MainActivity.Post) {
         edited.value = post
     }
 
-    fun cancel(content:String) {
-        edited.value?.let {
-            val text = content.trim()
-            if (it.content != text) {
-                return
-            }
-            edited.value = it.copy(content = text)
-        }
-    }
+//    fun cancel(content:String) {
+//        edited.value?.let {
+//            val text = content.trim()
+//            if (it.content != text) {
+//                return
+//            }
+//            edited.value = it.copy(content = text)
+//        }
+//    }
 
     fun save() {
         edited.value?.let {
@@ -53,5 +54,6 @@ private val empty = MainActivity.Post(
     sharedByMe = false,
     shares = 0,
     sawByMe = false,
-    visibility = 0
+    visibility = 0,
+    videoUrl = ""
  )

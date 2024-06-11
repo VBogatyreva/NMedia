@@ -11,7 +11,8 @@
       "sharedByMe": false,
       "shares": 0,
       "sawByMe": false,
-      "visibility": 0
+      "visibility": 0,
+      "videoUrl": ""
     },
 
     {
@@ -25,7 +26,8 @@
       "sharedByMe": false,
       "shares": 0,
       "sawByMe": false,
-      "visibility": 0
+      "visibility": 0,
+      "videoUrl": ""
     },
 
     {
@@ -39,7 +41,8 @@
       "sharedByMe": false,
       "shares": 0,
       "sawByMe": false,
-      "visibility": 0
+      "visibility": 0,
+      "videoUrl": ""
     },
     {
       "id": 4,
@@ -52,7 +55,8 @@
       "sharedByMe": false,
       "shares": 0,
       "sawByMe": false,
-      "visibility": 0
+      "visibility": 0,
+      "videoUrl": "https://www.youtube.com/watch?v=WhWc3b3KhnY"
     }
   ]
 }

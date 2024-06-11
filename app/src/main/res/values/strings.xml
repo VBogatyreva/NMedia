@@ -10,6 +10,9 @@
     <string name="like">Like</string>
     <string name="share">Share</string>
     <string name="menu">Menu</string>
+    <string name="description_post_save">Save</string>
+    <string name="add_post">Add</string>
+    <string name="video">Video</string>
 
 
 </resources>

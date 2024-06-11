@@ -17,7 +17,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             sharedByMe = false,
             shares = 0,
             sawByMe = false,
-            visibility = 0
+            visibility = 0,
+            videoUrl = null
         ),
         MainActivity.Post(
             id = 2,
@@ -29,7 +30,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             sharedByMe = false,
             shares = 0,
             sawByMe = false,
-            visibility = 0
+            visibility = 0,
+            videoUrl = null
         ),
         MainActivity.Post(
             id = 3,
@@ -41,7 +43,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             sharedByMe = false,
             shares = 0,
             sawByMe = false,
-            visibility = 0
+            visibility = 0,
+            videoUrl = null
         ),
         MainActivity.Post(
             id = 4,
@@ -53,9 +56,10 @@ class PostRepositoryInMemoryImpl : PostRepository {
             sharedByMe = false,
             shares = 0,
             sawByMe = false,
-            visibility = 0
+            visibility = 0,
+            videoUrl = "https://www.youtube.com/watch?v=WhWc3b3KhnY"
         )
-    )
+     )
 
     private val data = MutableLiveData(posts)
 
@@ -103,7 +107,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
         posts = posts.map {
             if (it.id != post.id) it else it.copy(content = post.content)
         }
-        data.value = posts
+       data.value = posts
     }
 
     override fun save(post: MainActivity.Post) {
@@ -121,7 +125,12 @@ class PostRepositoryInMemoryImpl : PostRepository {
         }
         posts = posts.map {
             if (it.id != post.id) it else it.copy(content = post.content)
+
         }
+        data.value = posts
+    }
+
+    override fun video() {
         data.value = posts
     }
 }

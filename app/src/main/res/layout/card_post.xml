@@ -72,16 +72,43 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="avatar, published, menu"/>
 
+        <FrameLayout
+
+            android:id="@+id/videoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/barrierTop"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <VideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_blue_light"/>
+
+            <ImageView
+                android:id="@+id/videoImage"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_launcher_play_foreground"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
         <TextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toTopOf="@id/barrierBottom"
+            android:autoLink="web"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrierTop"
+            app:layout_constraintTop_toBottomOf="@id/videoLayout"
             tools:text="@sample/assets.json/data/content" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -105,6 +132,7 @@
             tools:text="@sample/assets.json/data/likes"
             style="@style/Widget.AppTheme.LikeButton" />
 
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/share"
             android:layout_width="wrap_content"
@@ -125,6 +153,7 @@
             app:layout_constraintTop_toTopOf="@+id/barrierBottom"
             tools:text="@sample/assets.json/data/visibility"
             style="@style/Widget.AppTheme.VisibilityButton" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

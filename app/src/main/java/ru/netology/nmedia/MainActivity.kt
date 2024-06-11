@@ -1,30 +1,50 @@
 package ru.netology.nmedia
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
+import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import ru.netology.nmedia.activity.EditPostResultContract
+import ru.netology.nmedia.activity.NewPostResultContract
 import ru.netology.nmedia.databinding.ActivityMainBinding
 
 // branch master 3.1. Material Design
 
 class MainActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val viewModel: PostViewModel by viewModels()
+
+        val editPostLauncher = registerForActivityResult (EditPostResultContract()) { result ->
+            result?:return@registerForActivityResult
+            viewModel.changeContent(result)
+            viewModel.save()
+        }
+
         val adapter = PostsAdapter (object : OnInteractionListener {
             override fun onLike(post: Post) {
                 viewModel.likeById(post.id)
             }
             override fun onShare(post: Post) {
                 viewModel.shareById(post.id)
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(intent, getString(R.string.share))
+                startActivity(shareIntent)
             }
             override fun onSaw(post: Post) {
                 viewModel.sawById(post.id)
@@ -34,6 +54,16 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                editPostLauncher.launch(post.content)
+
+            }
+
+            override fun onVideo(post : Post) {
+                post.videoUrl?.let {viewModel.video()}
+                if (!post.videoUrl.isNullOrEmpty()) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl))
+                    startActivity(intent)
+                }
             }
         })
 
@@ -42,55 +72,31 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(posts)
         }
 
-        binding.save.setOnClickListener {
-            with (binding.content) {
-                if (text.isNullOrBlank()) {
-                    Toast.makeText (
-                        this@MainActivity,
-                        "Content can`t be empty",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                viewModel.changeContent(text.toString())
-                viewModel.save()
-
-                setText("")
-                clearFocus()
-                AndroidUnils.hideKeyboard(this)
-                binding.group.visibility = View.GONE
-
-            }
+        val newPostLauncher = registerForActivityResult (NewPostResultContract()) { result ->
+            result?:return@registerForActivityResult
+            viewModel.changeContent(result)
+            viewModel.save()
         }
 
-        viewModel.edited.observe(this) { post ->
-            if (post.id == 0L) {
-                return@observe
-            }
-            with(binding.content) {
-                requestFocus()
-                setText(post.content)
-                binding.group.visibility = View.VISIBLE
-            }
-
+        binding.fab.setOnClickListener {
+            newPostLauncher.launch()
         }
 
-        binding.content.setOnClickListener{
-            binding.group.visibility = View.VISIBLE
-        }
+//        val editPostLauncher = registerForActivityResult (EditPostResultContract()) { result ->
+//            result?:return@registerForActivityResult
+//            viewModel.changeContent(result)
+//            viewModel.save()
+//        }
 
-        binding.cancel.setOnClickListener {
-            with(binding.content) {
 
-                viewModel.cancel(text.toString())
-                viewModel.save()
 
-                setText("")
-                clearFocus()
-                AndroidUnils.hideKeyboard(this)
-                binding.group.visibility = View.GONE
-            }
-        }
+//        viewModel.edited.observe(this) {
+//            if (it.id == 0L) {
+//                return@observe
+//            }
+//            editPostLauncher.launch(it.content)
+//        }
+
     }
 
     data class Post(
@@ -103,7 +109,8 @@ class MainActivity : AppCompatActivity() {
         val sharedByMe: Boolean,
         val shares: Long,
         val sawByMe: Boolean,
-        val visibility: Long
+        val visibility: Long,
+        val videoUrl: String?
     )
 }
 
@@ -112,6 +119,9 @@ object AndroidUnils {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken,0)
     }
+
+
+
 }
 
 
