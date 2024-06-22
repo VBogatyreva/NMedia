@@ -13,18 +13,10 @@ class PostViewModel (private val repository : PostRepository = PostRepositoryInM
     fun removeById(id:Long) = repository.removeById(id)
     fun video() = repository.video()
     fun edit(post : MainActivity.Post) {
-        edited.value = post
+        edited.value?.let {
+            edited.value = post
+        }
     }
-
-//    fun cancel(content:String) {
-//        edited.value?.let {
-//            val text = content.trim()
-//            if (it.content != text) {
-//                return
-//            }
-//            edited.value = it.copy(content = text)
-//        }
-//    }
 
     fun save() {
         edited.value?.let {
@@ -41,6 +33,10 @@ class PostViewModel (private val repository : PostRepository = PostRepositoryInM
             }
             edited.value = it.copy(content = text)
         }
+    }
+
+    fun clearEdit() {
+        edited.value = empty
     }
 }
 

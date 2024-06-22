@@ -13,7 +13,7 @@ import ru.netology.nmedia.activity.EditPostResultContract
 import ru.netology.nmedia.activity.NewPostResultContract
 import ru.netology.nmedia.databinding.ActivityMainBinding
 
-// branch master 3.1. Material Design
+// branch master 3.2. Организация навигации (перемещение между Activity)
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,9 +27,12 @@ class MainActivity : AppCompatActivity() {
         val viewModel: PostViewModel by viewModels()
 
         val editPostLauncher = registerForActivityResult (EditPostResultContract()) { result ->
-            result?:return@registerForActivityResult
-            viewModel.changeContent(result)
-            viewModel.save()
+            result?.let {
+                viewModel.changeContent(result)
+                viewModel.save()
+            }
+            viewModel.clearEdit()
+
         }
 
         val adapter = PostsAdapter (object : OnInteractionListener {
