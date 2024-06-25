@@ -7,7 +7,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
 
     private var nextId = 1L
     private var posts = listOf(
-        MainActivity.Post(
+        FeedFragment.Post(
             id = nextId++,
             author = "Нетология. Университет интренет-профессий будущего",
             published = "21 мая в 18:36",
@@ -20,7 +20,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             visibility = 0,
             videoUrl = null
         ),
-        MainActivity.Post(
+        FeedFragment.Post(
             id = nextId++,
             author = "Нетология. Университет интренет-профессий будущего",
             published = "22 мая в 18:36",
@@ -33,7 +33,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             visibility = 0,
             videoUrl = null
         ),
-        MainActivity.Post(
+        FeedFragment.Post(
             id = nextId++,
             author = "Нетология. Университет интренет-профессий будущего",
             published = "22 мая в 18:36",
@@ -46,7 +46,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             visibility = 0,
             videoUrl = null
         ),
-        MainActivity.Post(
+        FeedFragment.Post(
             id = nextId++,
             author = "Нетология. Университет интренет-профессий будущего",
             published = "22 мая в 18:36",
@@ -63,7 +63,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
 
     private val data = MutableLiveData(posts)
 
-    override fun getAll(): LiveData<List<MainActivity.Post>> = data
+    override fun getAll(): LiveData<List<FeedFragment.Post>> = data
 
     override fun likeById(id: Long) {
         posts = posts.map {
@@ -102,7 +102,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = posts
     }
 
-    override fun edit(post:MainActivity.Post) {
+    override fun edit(post:FeedFragment.Post) {
 
         posts = posts.map {
             if (it.id != post.id) it else it.copy(content = post.content)
@@ -110,7 +110,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
        data.value = posts
     }
 
-    override fun save(post: MainActivity.Post) {
+    override fun save(post: FeedFragment.Post) {
         if (post.id == 0L) {
             posts = listOf(
                 post.copy(

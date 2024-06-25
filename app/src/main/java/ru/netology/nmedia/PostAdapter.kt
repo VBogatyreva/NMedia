@@ -10,19 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.databinding.CardPostBinding
 
 interface OnInteractionListener {
-    fun onLike (post : MainActivity.Post) {}
-    fun onEdit (post : MainActivity.Post) {}
-    fun onRemove (post : MainActivity.Post) {}
-    fun onShare (post : MainActivity.Post) {}
-    fun onSaw (post : MainActivity.Post) {}
-    fun onVideo (post : MainActivity.Post) {}
+    fun onLike (post : FeedFragment.Post) {}
+    fun onEdit (post : FeedFragment.Post) {}
+    fun onRemove (post : FeedFragment.Post) {}
+    fun onShare (post : FeedFragment.Post) {}
+    fun onSaw (post : FeedFragment.Post) {}
+    fun onVideo (post : FeedFragment.Post) {}
+    fun onOpen (post : FeedFragment.Post) {}
 
 }
 
 class PostsAdapter(
     private val onInteractionListener: OnInteractionListener
 
-) : ListAdapter<MainActivity.Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
+) : ListAdapter<FeedFragment.Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
 
 
     override fun onCreateViewHolder (parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -41,7 +42,7 @@ class PostsAdapter(
         private val onInteractionListener: OnInteractionListener
 
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind (post: MainActivity.Post) {
+        fun bind (post: FeedFragment.Post) {
             binding.apply {
                 author.text = post.author
                 published.text = post.published
@@ -95,16 +96,20 @@ class PostsAdapter(
                         }
                     }.show()
                 }
+
+                root.setOnClickListener {
+                    onInteractionListener.onOpen(post)
+                }
             }
         }
     }
 
-    class PostDiffCallback : DiffUtil.ItemCallback<MainActivity.Post>() {
-        override fun areItemsTheSame(oldItem: MainActivity.Post, newItem: MainActivity.Post): Boolean {
+    class PostDiffCallback : DiffUtil.ItemCallback<FeedFragment.Post>() {
+        override fun areItemsTheSame(oldItem: FeedFragment.Post, newItem: FeedFragment.Post): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MainActivity.Post, newItem: MainActivity.Post): Boolean {
+        override fun areContentsTheSame(oldItem: FeedFragment.Post, newItem: FeedFragment.Post): Boolean {
             return oldItem == newItem
         }
     }

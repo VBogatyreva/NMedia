@@ -14,38 +14,8 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".EditPostActivity"
-            android:label="EditPost"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-
-
-
-        </activity>
-
-        <activity
-            android:name=".NewPostActivity"
-            android:label="NewPost"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_NOTE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-
-
-        </activity>
-
-
-        <activity
-            android:name=".IntentHendlerActivity"
-            android:label="IntentHendler"
+            android:name=".AppActivity"
+            android:label="AppActivity"
             android:exported="true">
 
             <intent-filter>
@@ -55,18 +25,13 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
-        </activity>
-
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
     </application>

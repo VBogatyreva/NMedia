@@ -12,7 +12,7 @@ class PostViewModel (private val repository : PostRepository = PostRepositoryInM
     fun sawById(id: Long) = repository.sawById(id)
     fun removeById(id:Long) = repository.removeById(id)
     fun video() = repository.video()
-    fun edit(post : MainActivity.Post) {
+    fun edit(post : FeedFragment.Post) {
         edited.value?.let {
             edited.value = post
         }
@@ -40,7 +40,7 @@ class PostViewModel (private val repository : PostRepository = PostRepositoryInM
     }
 }
 
-private val empty = MainActivity.Post(
+private val empty = FeedFragment.Post(
     id = 0,
     author = "",
     published = "",
