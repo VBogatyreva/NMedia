@@ -4,36 +4,31 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.result.launch
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import ru.netology.nmedia.activity.EditPostResultContract
-import ru.netology.nmedia.activity.NewPostResultContract
-import ru.netology.nmedia.databinding.ActivityMainBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.databinding.FragmentFeedBinding
 
-// branch master 3.2. Организация навигации (перемещение между Activity)
+// branch master 3.4. Fragments, FragmentManager
 
-class MainActivity : AppCompatActivity() {
+class FeedFragment : Fragment() {
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val viewModel: PostViewModel by viewModels()
-
-        val editPostLauncher = registerForActivityResult (EditPostResultContract()) { result ->
-            result?.let {
-                viewModel.changeContent(result)
-                viewModel.save()
-            }
-            viewModel.clearEdit()
-
-        }
+        val viewModel: PostViewModel by viewModels(
+            ownerProducer = ::requireParentFragment
+        )
 
         val adapter = PostsAdapter (object : OnInteractionListener {
             override fun onLike(post: Post) {
@@ -57,7 +52,6 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
-                editPostLauncher.launch(post.content)
 
             }
 
@@ -68,39 +62,26 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
+
+            override fun onOpen(post: Post) {
+                findNavController().navigate(R.id.action_feedFragment_to_onePostFragment, Bundle().apply { textArg = post.id.toString() })
+            }
         })
 
         binding.list.adapter = adapter
-        viewModel.data.observe(this) { posts ->
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
             adapter.submitList(posts)
         }
 
-        val newPostLauncher = registerForActivityResult (NewPostResultContract()) { result ->
-            result?:return@registerForActivityResult
-            viewModel.changeContent(result)
-            viewModel.save()
-        }
-
         binding.fab.setOnClickListener {
-            newPostLauncher.launch()
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+
         }
-
-//        val editPostLauncher = registerForActivityResult (EditPostResultContract()) { result ->
-//            result?:return@registerForActivityResult
-//            viewModel.changeContent(result)
-//            viewModel.save()
-//        }
-
-
-
-//        viewModel.edited.observe(this) {
-//            if (it.id == 0L) {
-//                return@observe
-//            }
-//            editPostLauncher.launch(it.content)
-//        }
-
+        return binding.root
     }
+
+
+
 
     data class Post(
         val id: Long,
