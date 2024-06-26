@@ -14,7 +14,11 @@ import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 
+<<<<<<< HEAD
 // branch master 3.4. "Fragments, FragmentManager"
+=======
+// branch master 3.4. Fragments, FragmentManager
+>>>>>>> 38180b2fea8d268e3e8c4b4d9a75f74f6661e604
 
 class FeedFragment : Fragment() {
 
