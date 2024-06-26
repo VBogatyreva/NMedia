@@ -18,6 +18,7 @@ import ru.netology.nmedia.databinding.FragmentFeedBinding
 // branch master 3.4. "Fragments, FragmentManager"
 
 
+
 class FeedFragment : Fragment() {
 
     override fun onCreateView(
