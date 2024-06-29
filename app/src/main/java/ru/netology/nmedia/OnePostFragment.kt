@@ -18,11 +18,13 @@ class OnePostFragment : Fragment() {
         ownerProducer = ::requireParentFragment
     )
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         val binding = FragmentOnePostBinding.inflate(inflater, container, false)
+
 
         val viewHolder = PostsAdapter.PostViewHolder(binding.post,
             object : OnInteractionListener {
@@ -57,25 +59,27 @@ class OnePostFragment : Fragment() {
                         startActivity(intent)
                     }
                 }
+
             })
 
         viewModel.edited.observe(viewLifecycleOwner) {
             if(it.id != 0L) {
                 findNavController().navigate(R.id.action_onePostFragment_to_newPostFragment, Bundle().apply { textArg = it.content })
+
             }
         }
 
         val id = arguments?.textArg?.toLong() ?: -1
+
         viewModel.data.observe(viewLifecycleOwner) { posts ->
             val post = posts.find { it.id == id } ?: run{
+
                 findNavController().navigateUp()
                 return@observe
             }
+
             viewHolder.bind(post)
         }
-
-
-
 
         return binding.root
     }

@@ -38,7 +38,7 @@ class FeedFragment : Fragment() {
                 viewModel.likeById(post.id)
             }
             override fun onShare(post: Post) {
-                viewModel.shareById(post.id)
+
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, post.content)
@@ -46,6 +46,7 @@ class FeedFragment : Fragment() {
                 }
                 val shareIntent = Intent.createChooser(intent, getString(R.string.share))
                 startActivity(shareIntent)
+                viewModel.shareById(post.id)
             }
             override fun onSaw(post: Post) {
                 viewModel.sawById(post.id)
@@ -55,7 +56,11 @@ class FeedFragment : Fragment() {
             }
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
-
+                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply {
+                        textArg = post.content.toString()
+                    }
+                )
             }
 
             override fun onVideo(post : Post) {
@@ -80,11 +85,9 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
 
         }
+
         return binding.root
     }
-
-
-
 
     data class Post(
         val id: Long,
@@ -106,9 +109,6 @@ object AndroidUnils {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken,0)
     }
-
-
-
 }
 
 

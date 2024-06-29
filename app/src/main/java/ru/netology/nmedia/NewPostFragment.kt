@@ -11,6 +11,10 @@ import ru.netology.nmedia.databinding.FragmentNewPostBinding
 
 class NewPostFragment : Fragment() {
 
+    private val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,23 +23,18 @@ class NewPostFragment : Fragment() {
 
         val binding = FragmentNewPostBinding.inflate(inflater, container,false)
 
+        binding.addNewPost.requestFocus()
+
         arguments?.textArg?.let(binding.addNewPost::setText)
 
 
-        val viewModel: PostViewModel by viewModels(
-            ownerProducer = ::requireParentFragment
-        )
-
-        binding.addNewPost.requestFocus()
-
         binding.OkNewPost.setOnClickListener {
 
-            if (binding.addNewPost.text.isNotBlank()) {
-                viewModel.changeContent(binding.addNewPost.text.toString())
-                viewModel.save()
-                findNavController().navigateUp()
-            }
-            activity?.finish()
+            viewModel.changeContent(binding.addNewPost.text.toString())
+            viewModel.save()
+            AndroidUnils.hideKeyboard(requireView())
+            findNavController().navigateUp()
+
         }
         return binding.root
     }
@@ -43,7 +42,6 @@ class NewPostFragment : Fragment() {
     companion object {
         var Bundle.textArg: String? by StringArg
     }
-
 }
 
 
