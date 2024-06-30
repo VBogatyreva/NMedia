@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData
 
 class PostViewModel (application: Application) : AndroidViewModel(application) {
 
-    private val repository : PostRepository = PostRepositorySQLiteImpl(AppDb.getInstance(application).PostDao)
+    private val repository : PostRepository =
+        PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
 
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
@@ -48,9 +49,6 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun clearEdit() {
-        edited.value = empty
-    }
 }
 
 private val empty = FeedFragment.Post(
