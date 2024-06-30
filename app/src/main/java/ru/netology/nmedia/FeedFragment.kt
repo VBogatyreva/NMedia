@@ -15,7 +15,7 @@ import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 
 
-// branch master 3.4. "Fragments, FragmentManager"
+// branch master 4.1 SQL и SQLite
 
 
 
@@ -96,9 +96,7 @@ class FeedFragment : Fragment() {
         val content: String,
         val likedByMe: Boolean,
         val likes: Long,
-        val sharedByMe: Boolean,
         val shares: Long,
-        val sawByMe: Boolean,
         val visibility: Long,
         val videoUrl: String?
     )

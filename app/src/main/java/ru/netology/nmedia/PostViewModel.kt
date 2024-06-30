@@ -1,12 +1,25 @@
 package ru.netology.nmedia
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
-class PostViewModel (private val repository : PostRepository = PostRepositoryInMemoryImpl()) : ViewModel() {
+class PostViewModel (application: Application) : AndroidViewModel(application) {
+
+    private val repository : PostRepository = PostRepositorySQLiteImpl(AppDb.getInstance(application).PostDao)
 
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
+
+    private var draft = ""
+    fun saveDraft(text: String) {
+        draft = text
+    }
+    fun dropDraft() {
+        draft = ""
+    }
+    fun getDraft() = draft
+
     fun likeById(id: Long) = repository.likeById(id)
     fun shareById(id: Long) = repository.shareById(id)
     fun sawById(id: Long) = repository.sawById(id)
@@ -47,9 +60,7 @@ private val empty = FeedFragment.Post(
     content = "",
     likedByMe = false,
     likes = 0,
-    sharedByMe = false,
     shares = 0,
-    sawByMe = false,
     visibility = 0,
     videoUrl = ""
- )
+)
