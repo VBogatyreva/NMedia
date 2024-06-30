@@ -29,6 +29,7 @@ class PostRepositorySQLiteImpl(private val dao: PostDao) : PostRepository {
     }
 
     override fun shareById(id: Long) {
+        dao.shareById(id)
 
         posts = posts.map {
 
@@ -39,6 +40,7 @@ class PostRepositorySQLiteImpl(private val dao: PostDao) : PostRepository {
     }
 
     override fun sawById(id: Long) {
+        dao.sawById(id)
 
         posts = posts.map {
 
