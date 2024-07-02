@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface PostDao {
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
-    fun getAll() : LiveData<List<FeedFragment.Post>>
+    fun getAll() : LiveData<List<PostEntity>>
 
     @Insert
     fun insert(post: PostEntity)
