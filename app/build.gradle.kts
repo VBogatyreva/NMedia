@@ -5,7 +5,7 @@ plugins {
     id ("com.android.application")
     id ("kotlin-android")
     id ("org.jetbrains.kotlin.kapt")
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    id("com.google.gms.google-services")
 
 
 }
