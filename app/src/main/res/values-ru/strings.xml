@@ -14,4 +14,14 @@
     <string name="description_post_save">Сохранить</string>
     <string name="add_post">Добавить</string>
     <string name="video">Видео</string>
+
+    <string name="google_play_unavailable">Google Api не доступно</string>
+    <string name="notification_user_liked">Пользователю %1$s понравилось сообщение пользователя %2$s</string>
+    <string name="channel_remote_name">Сообщения сервера</string>
+    <string name="channel_remote_description">Сообщения удаленного сервера</string>
+    <string name="notification_new_post">%1$s опубликовал сообщение</string>
+
+    <string name="notification_error_title"/>
+    <string name="notification_error_text"/>
+
 </resources>

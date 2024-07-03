@@ -4,3 +4,21 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
 
 }
+
+buildscript {
+    repositories{
+        google()
+    }
+
+    dependencies{
+
+    }
+}
+
+allprojects {
+    repositories {
+
+    }
+}
+
+

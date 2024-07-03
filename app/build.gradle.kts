@@ -1,9 +1,13 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+//    alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 
+    id ("com.android.application")
     id ("kotlin-android")
-    id ("kotlin-kapt")
+    id ("org.jetbrains.kotlin.kapt")
+    id("com.google.gms.google-services") version "4.4.2" apply false
+
+
 }
 
 
@@ -51,6 +55,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,4 +76,10 @@ dependencies {
 
     implementation("androidx.room:room-runtime:2.6.1")
     kapt ("androidx.room:room-compiler:2.6.1")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation ("com.google.android.gms:play-services-base:18.5.0")
+    implementation ("com.google.firebase:firebase-messaging-ktx")
+    implementation ("com.google.firebase:firebase-messaging:24.0.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
 }
