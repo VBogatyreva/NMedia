@@ -90,7 +90,6 @@ class FCMService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        println("FCM token:")
         println(token)
     }
 
