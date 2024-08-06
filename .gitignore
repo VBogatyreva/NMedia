@@ -2,6 +2,7 @@ reserve.md
 HELP.md
 .gradle
 build/
+app/google-services.json
 
 ### STS ###
 .apt_generated
@@ -46,3 +47,6 @@ captures/
 
 ### Gradle ###
 !gradle/wrapper/gradle-wrapper.jar
+
+### Firebase ###
+google-services.json
