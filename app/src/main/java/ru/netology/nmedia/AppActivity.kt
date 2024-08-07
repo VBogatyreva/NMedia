@@ -1,5 +1,6 @@
 package ru.netology.nmedia
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -14,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
-import android.Manifest
 
 class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +80,6 @@ class AppActivity : AppCompatActivity() {
         if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
             return
         }
-
         requestPermissions(arrayOf(permission), 1)
     }
 }
