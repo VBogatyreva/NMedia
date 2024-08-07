@@ -2,4 +2,25 @@
     <string name="app_name">NMedia</string>
     <string name="nmedia">NMedia!</string>
     <string name="no">no</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_remove">Remove</string>
+    <string name="text_edit">Edit Message</string>
+    <string name="post_text">Post Text</string>
+    <string name="text_post_save">Save</string>
+    <string name="like">Like</string>
+    <string name="share">Share</string>
+    <string name="menu">Menu</string>
+    <string name="description_post_save">Save</string>
+    <string name="add_post">Add</string>
+    <string name="video">Video</string>
+
+    <string name="google_play_unavailable">Google Api Unavailable</string>
+    <string name="notification_user_liked">User %1$s liked %2$s\'s post</string>
+    <string name="channel_remote_name">Server notifications</string>
+    <string name="channel_remote_description">Notifications from remote server</string>
+    <string name="notification_new_post">%1$s published new post</string>
+    <string name="notification_error_title"/>
+    <string name="notification_error_text"/>
+
+
 </resources>

@@ -1,28 +1,34 @@
 package ru.netology.nmedia
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.databinding.CardPostBinding
 
+interface OnInteractionListener {
+    fun onLike (post : FeedFragment.Post) {}
+    fun onEdit (post : FeedFragment.Post) {}
+    fun onRemove (post : FeedFragment.Post) {}
+    fun onShare (post : FeedFragment.Post) {}
+    fun onSaw (post : FeedFragment.Post) {}
+    fun onVideo (post : FeedFragment.Post) {}
+    fun onOpen (post : FeedFragment.Post) {}
 
-typealias OnLikeListener = (post : MainActivity.Post) -> Unit
-typealias OnShareListener = (post : MainActivity.Post) -> Unit
-typealias OnSawListener = (post : MainActivity.Post) -> Unit
+}
 
 class PostsAdapter(
-    private val onLikeListener: OnLikeListener,
-    private val onShareListener: OnShareListener,
-    private val onSawListener: OnSawListener
+    private val onInteractionListener: OnInteractionListener
 
-) : ListAdapter<MainActivity.Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
+) : ListAdapter<FeedFragment.Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
 
 
     override fun onCreateViewHolder (parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, onLikeListener, onShareListener, onSawListener)
+        return PostViewHolder(binding, onInteractionListener)
     }
 
     override fun onBindViewHolder (holder: PostViewHolder, position: Int) {
@@ -33,50 +39,78 @@ class PostsAdapter(
 
     class PostViewHolder (
         private val binding: CardPostBinding,
-        private val onLikeListener: OnLikeListener,
-        private val onShareListener: OnShareListener,
-        private val onSawListener: OnSawListener
+        private val onInteractionListener: OnInteractionListener
 
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind (post: MainActivity.Post) {
+        fun bind (post: FeedFragment.Post) {
             binding.apply {
                 author.text = post.author
                 published.text = post.published
                 content.text = post.content
 
-                countLikes.text = numberFormat(post.likes)
-                countSharing.text = numberFormat(post.shares)
-                countVisibility.text = numberFormat(post.visibility)
+                likes.text = numberFormat(post.likes)
+                share.text = numberFormat(post.shares)
+                visibiluty.text = numberFormat(post.visibility)
 
-                likes.setImageResource(
-                    if (post.likedByMe) R.drawable.ic_launcher_liked_foreground else R.drawable.ic_launcher_like_foreground
-                )
+                likes.isChecked = post.likedByMe
+                likes.text = "${post.likes}"
+
+                if (!post.videoUrl.isNullOrEmpty()) {
+                    videoLayout.visibility = View.VISIBLE
+                } else {
+                    videoLayout.visibility = View.GONE
+                }
+
+                videoLayout.setOnClickListener {
+                    onInteractionListener.onVideo(post)
+                }
 
                 likes.setOnClickListener{
-                    onLikeListener(post)
+                    onInteractionListener.onLike(post)
                 }
 
                 share.setOnClickListener {
-                    onShareListener(post)
+                    onInteractionListener.onShare(post)
                 }
 
                 visibiluty.setOnClickListener {
-                    onSawListener(post)
+                    onInteractionListener.onSaw(post)
+                }
+
+                menu.setOnClickListener {
+                    PopupMenu(it.context, it).apply {
+                        inflate(R.menu.options_post)
+                        setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.remove -> {
+                                    onInteractionListener.onRemove(post)
+                                    true
+                                }
+                                R.id.edit -> {
+                                    onInteractionListener.onEdit(post)
+                                    true
+                                }
+
+                                else -> false
+                            }
+                        }
+                    }.show()
+                }
+
+                root.setOnClickListener {
+                    onInteractionListener.onOpen(post)
                 }
             }
         }
-
     }
 
-    class PostDiffCallback : DiffUtil.ItemCallback<MainActivity.Post>() {
-        override fun areItemsTheSame(oldItem: MainActivity.Post, newItem: MainActivity.Post): Boolean {
+    class PostDiffCallback : DiffUtil.ItemCallback<FeedFragment.Post>() {
+        override fun areItemsTheSame(oldItem: FeedFragment.Post, newItem: FeedFragment.Post): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MainActivity.Post, newItem: MainActivity.Post): Boolean {
+        override fun areContentsTheSame(oldItem: FeedFragment.Post, newItem: FeedFragment.Post): Boolean {
             return oldItem == newItem
         }
     }
-
-
 }
