@@ -15,10 +15,6 @@ import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 
 
-//   branch master 4.3 Notifications & Pushes
-
-
-
 class FeedFragment : Fragment() {
 
     override fun onCreateView(

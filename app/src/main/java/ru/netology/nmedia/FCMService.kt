@@ -31,7 +31,6 @@ class FCMService : FirebaseMessagingService() {
             }
             val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
-
         }
     }
 

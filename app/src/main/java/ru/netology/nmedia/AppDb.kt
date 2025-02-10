@@ -10,7 +10,6 @@ import androidx.room.RoomDatabase
 abstract class AppDb: RoomDatabase(){
     abstract fun postDao(): PostDao
 
-
     companion object{
         @Volatile
         private var instance: AppDb? = null

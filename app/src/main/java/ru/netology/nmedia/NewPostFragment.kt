@@ -39,7 +39,6 @@ class NewPostFragment : Fragment() {
             viewModel.dropDraft()
             AndroidUnils.hideKeyboard(requireView())
             findNavController().navigateUp()
-
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

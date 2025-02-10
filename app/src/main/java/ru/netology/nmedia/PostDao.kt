@@ -42,5 +42,4 @@ interface PostDao {
 
     fun save(post: PostEntity) =
         if(post.id == 0L) insert(post) else updateContentById(post.id, post.content)
-
 }

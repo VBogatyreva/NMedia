@@ -49,7 +49,6 @@ class AppActivity : AppCompatActivity() {
         }
         checkGoogleApiAvailability()
         requestNotificationsPermission()
-
     }
 
     private fun checkGoogleApiAvailability() {

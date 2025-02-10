@@ -25,7 +25,6 @@ class OnePostFragment : Fragment() {
 
         val binding = FragmentOnePostBinding.inflate(inflater, container, false)
 
-
         val viewHolder = PostsAdapter.PostViewHolder(binding.post,
             object : OnInteractionListener {
                 override fun onLike(post: FeedFragment.Post) {
