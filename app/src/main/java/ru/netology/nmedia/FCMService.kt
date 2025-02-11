@@ -167,4 +167,5 @@ data class NewPost (
 
 data class Notification (
     val textNotification: String
+
 )

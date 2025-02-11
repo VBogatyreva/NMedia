@@ -18,7 +18,6 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
                 it.videoUrl
             )
         }
-
     }
 
     override fun likeById(id: Long) {

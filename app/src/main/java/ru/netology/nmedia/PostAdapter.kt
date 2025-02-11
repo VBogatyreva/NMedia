@@ -113,4 +113,5 @@ class PostsAdapter(
             return oldItem == newItem
         }
     }
+
 }

@@ -10,5 +10,4 @@ interface PostRepository {
     fun removeById(id:Long)
     fun save(post:FeedFragment.Post)
     fun video()
-
 }

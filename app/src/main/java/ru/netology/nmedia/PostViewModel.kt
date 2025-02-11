@@ -48,7 +48,6 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
             edited.value = it.copy(content = text)
         }
     }
-
 }
 
 private val empty = FeedFragment.Post(

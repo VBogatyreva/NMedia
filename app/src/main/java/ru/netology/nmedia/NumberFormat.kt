@@ -29,4 +29,5 @@ package ru.netology.nmedia
 
             else -> String.format("%.1fМ", number / 1_000_000.0)
         }
+
     }
