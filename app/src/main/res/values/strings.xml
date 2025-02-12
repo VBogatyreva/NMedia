@@ -21,6 +21,9 @@
     <string name="notification_new_post">%1$s published new post</string>
     <string name="notification_error_title"/>
     <string name="notification_error_text"/>
+    <string name="empty_posts">empty_posts</string>
+    <string name="error_loading">error_loading</string>
+    <string name="retry_loading">retry_loading</string>
 
 
 </resources>

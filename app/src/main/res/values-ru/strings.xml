@@ -24,4 +24,8 @@
     <string name="notification_error_title"/>
     <string name="notification_error_text"/>
 
+    <string name="empty_posts">Нет постов</string>
+    <string name="error_loading">Ошибка загрузки</string>
+    <string name="retry_loading">Повторная загрузка</string>
+
 </resources>

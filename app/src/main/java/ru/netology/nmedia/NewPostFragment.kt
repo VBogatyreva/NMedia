@@ -42,6 +42,11 @@ class NewPostFragment : Fragment() {
 
         }
 
+        viewModel.postCreated.observe(viewLifecycleOwner) {
+            viewModel.loadPosts()
+            findNavController().navigateUp()
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.saveDraft(binding.addNewPost.text.toString())
             findNavController().navigateUp()
