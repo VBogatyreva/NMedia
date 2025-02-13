@@ -45,7 +45,6 @@ class AppActivity : AppCompatActivity() {
                 Bundle().apply {
                     textArg = text
                 })
-
         }
         checkGoogleApiAvailability()
         requestNotificationsPermission()
@@ -82,5 +81,4 @@ class AppActivity : AppCompatActivity() {
         }
         requestPermissions(arrayOf(permission), 1)
     }
-
 }

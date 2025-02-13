@@ -70,7 +70,9 @@ class FeedFragment : Fragment() {
             }
 
             override fun onOpen(post: Post) {
-                findNavController().navigate(R.id.action_feedFragment_to_onePostFragment, Bundle().apply { textArg = post.id.toString() })
+                findNavController().navigate(R.id.action_feedFragment_to_onePostFragment,
+                    Bundle().apply
+                    { textArg = post.id.toString() })
             }
         })
 
@@ -88,7 +90,6 @@ class FeedFragment : Fragment() {
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
-
         }
 
         return binding.root
@@ -112,7 +113,6 @@ object AndroidUnils {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken,0)
     }
-
 }
 
 

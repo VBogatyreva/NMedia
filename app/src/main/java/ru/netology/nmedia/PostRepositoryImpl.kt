@@ -41,7 +41,6 @@ class PostRepositoryImpl : PostRepository {
         client.newCall(request)
             .execute()
             .close()
-
     }
 
     override fun shareById(id: Long) {
@@ -51,7 +50,6 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun removeById(id: Long) {
-
         val request: Request = Request.Builder()
             .delete()
             .url("${BASE_URL}/api/slow/posts/$id")

@@ -120,6 +120,7 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
     }
 
 }
+
     private val empty = FeedFragment.Post(
         id = 0,
         author = "",

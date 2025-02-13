@@ -38,8 +38,6 @@ class NewPostFragment : Fragment() {
             viewModel.save()
             viewModel.dropDraft()
             AndroidUnils.hideKeyboard(requireView())
-            findNavController().navigateUp()
-
         }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
@@ -58,7 +56,6 @@ class NewPostFragment : Fragment() {
     companion object {
         var Bundle.textArg: String? by StringArg
     }
-
 }
 
 

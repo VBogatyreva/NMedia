@@ -12,7 +12,6 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         require (!hasActiveObservers()) {
             error("Multiple observers registered but only one will be notified of changes.")
         }
-
         super.observe(owner) {
             if (pending) {
                 pending = false
