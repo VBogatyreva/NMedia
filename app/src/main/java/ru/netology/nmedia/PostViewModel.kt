@@ -45,7 +45,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getDraft() = draft
 
-
     fun shareById(id: Long) = repository.shareById(id)
     fun sawById(id: Long) = repository.sawById(id)
     fun video() = repository.video()

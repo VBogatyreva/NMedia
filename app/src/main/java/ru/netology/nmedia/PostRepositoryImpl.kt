@@ -20,6 +20,7 @@ class PostRepositoryImpl : PostRepository {
     private val typeToken = object : TypeToken<List<FeedFragment.Post>>() {}
 
     companion object {
+
         private const val BASE_URL = "http://10.0.2.2:9999"
         private val jsonType = "application/json".toMediaType()
     }
