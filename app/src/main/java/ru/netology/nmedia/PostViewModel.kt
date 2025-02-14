@@ -4,10 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import okio.IOException
-import kotlin.concurrent.thread
 
-class PostViewModel (application: Application) : AndroidViewModel(application) {
+class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: PostRepository = PostRepositoryImpl()
 
@@ -24,17 +22,17 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
     }
 
     fun loadPosts() {
-        thread {
-            _data.postValue(FeedModel(loading = true))
-            try {
-                val posts = repository.getAll()
-                FeedModel(posts = posts, empty = posts.isEmpty())
-            } catch (e: IOException) {
-                FeedModel(error = true)
-            }.also(_data::postValue)
-        }
-    }
+        _data.value = FeedModel(loading = true)
+        repository.getAllAsync(object : PostRepository.GetAllCallback<List<FeedFragment.Post>> {
+            override fun onSuccess(posts: List<FeedFragment.Post>) {
+                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
+            }
 
+            override fun onError(e: Exception) {
+                _data.postValue(FeedModel(error = true))
+            }
+        })
+    }
 
     private var draft = ""
     fun saveDraft(text: String) {
@@ -53,42 +51,38 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
     fun video() = repository.video()
 
     fun likeById(id: Long) {
-        thread {
-            val old = _data.value?.posts.orEmpty()
-            _data.postValue(
-                _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .map { post ->
-                        if (post.id == id) post.copy(
-                            likedByMe = !post.likedByMe,
-                            likes = post.likes + if (post.likedByMe) -1 else 1
-                        )
-                        else post
-                    }
-                )
-            )
-            try {
-                repository.likeById(id)
-            } catch (e: IOException) {
-                _data.postValue(_data.value?.copy(posts = old))
-            }
-        }
 
+        repository.likeByIdAsync(id, object : PostRepository.GetAllCallback<FeedFragment.Post> {
+            override fun onSuccess(posts: FeedFragment.Post) {
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                        .map {
+                            if (it.id != id) it
+                            else posts
+                        })
+                )
+            }
+
+            override fun onError(e: Exception) {
+                _data.postValue(FeedModel(error = true))
+            }
+        })
     }
 
     fun removeById(id: Long) {
-        thread {
-            val old = _data.value?.posts.orEmpty()
-            _data.postValue(
-                _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .filter { it.id != id }
-                )
+        val old = _data.value?.posts.orEmpty()
+        _data.postValue(
+            _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                .filter { it.id != id }
             )
-            try {
-                repository.removeById(id)
-            } catch (e: IOException) {
+        )
+        repository.removeByIdAsync(id, object : PostRepository.GetAllCallback<Any> {
+            override fun onSuccess(posts: Any) {
+            }
+            override fun onError(e: Exception) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
-        }
+        })
     }
 
 
@@ -101,12 +95,16 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
 
     fun save() {
         edited.value?.let {
-            thread {
-                repository.save(it)
-                _postCreated.postValue(Unit)
-            }
-            edited.value = empty
+            repository.saveAsync(it, object : PostRepository.GetAllCallback<FeedFragment.Post> {
+                override fun onSuccess(posts: FeedFragment.Post) {
+                    _postCreated.postValue(Unit)
+                }
+                override fun onError(e: Exception) {
+                    _data.postValue(FeedModel(error = true))
+                }
+            })
         }
+        edited.value = empty
     }
 
     fun changeContent(content: String) {
@@ -118,17 +116,16 @@ class PostViewModel (application: Application) : AndroidViewModel(application) {
             edited.value = it.copy(content = text)
         }
     }
-
 }
 
-    private val empty = FeedFragment.Post(
-        id = 0,
-        author = "",
-        published = "",
-        content = "",
-        likedByMe = false,
-        likes = 0,
-        shares = 0,
-        visibility = 0,
-        videoUrl = ""
-    )
+private val empty = FeedFragment.Post(
+    id = 0,
+    author = "",
+    published = "",
+    content = "",
+    likedByMe = false,
+    likes = 0,
+    shares = 0,
+    visibility = 0,
+    videoUrl = ""
+)

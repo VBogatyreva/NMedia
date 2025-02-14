@@ -15,8 +15,6 @@ import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 
-//   branch hw Сетевые запросы: Main Thread & Background
-
 class FeedFragment : Fragment() {
 
     override fun onCreateView(
