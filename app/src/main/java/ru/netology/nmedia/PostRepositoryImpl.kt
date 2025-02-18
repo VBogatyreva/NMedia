@@ -73,9 +73,10 @@ class PostRepositoryImpl : PostRepository {
         callback: PostRepository.GetAllCallback<FeedFragment.Post>
     ) {
         val request: Request = Request.Builder()
-            .post(gson.toJson(id).toRequestBody(jsonType))
+            .post("".toRequestBody())
             .url("${BASE_URL}/api/slow/posts/${id}/likes")
             .build()
+
         client.newCall(request)
             .enqueue(object : Callback {
                 override fun onResponse(call: Call, response: Response) {
@@ -87,6 +88,31 @@ class PostRepositoryImpl : PostRepository {
                     }
                 }
 
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError(e)
+                }
+            })
+    }
+
+    override fun unlikeByIdAsync(
+        id: Long,
+        callback: PostRepository.GetAllCallback<FeedFragment.Post>
+    ) {
+        val request: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/slow/posts/${id}/likes")
+            .build()
+
+        client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        val body = response.body?.string() ?: throw RuntimeException("body is null")
+                        callback.onSuccess(gson.fromJson(body, FeedFragment.Post::class.java))
+                    } catch (e: Exception) {
+                        callback.onError(e)
+                    }
+                }
                 override fun onFailure(call: Call, e: IOException) {
                     callback.onError(e)
                 }

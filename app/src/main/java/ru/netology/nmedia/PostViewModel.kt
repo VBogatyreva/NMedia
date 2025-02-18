@@ -68,6 +68,25 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         })
     }
 
+    fun unlikeById(id: Long) {
+
+        repository.unlikeByIdAsync(id, object : PostRepository.GetAllCallback<FeedFragment.Post> {
+            override fun onSuccess(posts: FeedFragment.Post) {
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                        .map {
+                            if (it.id != id) it
+                            else posts
+                        })
+                )
+            }
+
+            override fun onError(e: Exception) {
+                _data.postValue(FeedModel(error = true))
+            }
+        })
+    }
+
     fun removeById(id: Long) {
         val old = _data.value?.posts.orEmpty()
         _data.postValue(

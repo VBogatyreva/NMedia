@@ -13,6 +13,7 @@ interface PostRepository {
 
     fun getAllAsync(callback: GetAllCallback<List<FeedFragment.Post>>)
     fun likeByIdAsync(id: Long, callback: GetAllCallback <FeedFragment.Post>)
+    fun unlikeByIdAsync( id: Long, callback: GetAllCallback <FeedFragment.Post>)
     fun removeByIdAsync(id: Long, callback: GetAllCallback <Any>)
     fun saveAsync(post: FeedFragment.Post, callback: GetAllCallback <FeedFragment.Post>)
 
