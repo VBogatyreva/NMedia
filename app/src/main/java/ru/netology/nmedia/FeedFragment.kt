@@ -102,6 +102,7 @@ class FeedFragment : Fragment() {
         val author: String,
         val published: String,
         val content: String,
+        val authorAvatar: String,
         val likedByMe: Boolean,
         val likes: Long,
         val shares: Long,

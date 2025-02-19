@@ -7,6 +7,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.netology.nmedia.databinding.CardPostBinding
 
 interface OnInteractionListener {
@@ -46,6 +47,14 @@ class PostsAdapter(
                 author.text = post.author
                 published.text = post.published
                 content.text = post.content
+
+                Glide.with(binding.avatar)
+                    .load("http://10.0.2.2:9999/avatars/${post.authorAvatar}")
+                    .circleCrop()
+                    .placeholder(R.drawable.baseline_loading_24)
+                    .error(R.drawable.baseline_error_24)
+                    .timeout(10_000)
+                    .into(binding.avatar)
 
                 likes.text = numberFormat(post.likes)
                 share.text = numberFormat(post.shares)

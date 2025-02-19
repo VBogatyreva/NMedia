@@ -141,6 +141,7 @@ private val empty = FeedFragment.Post(
     author = "",
     published = "",
     content = "",
+    authorAvatar = "",
     likedByMe = false,
     likes = 0,
     shares = 0,

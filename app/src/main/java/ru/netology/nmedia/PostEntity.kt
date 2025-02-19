@@ -10,6 +10,7 @@ data class PostEntity(
     val author: String,
     val published: String,
     val content: String,
+    val authorAvatar: String,
     var likedByMe: Boolean,
     val likes: Long,
     val shares: Long,
@@ -24,6 +25,7 @@ data class PostEntity(
                 author = author,
                 published = published,
                 content = content,
+                authorAvatar = authorAvatar,
                 likedByMe = likedByMe,
                 likes = likes,
                 shares = shares,
@@ -33,16 +35,17 @@ data class PostEntity(
         }
     }
 
-//    fun toDto() = FeedFragment.Post(
-//        id = id,
-//        author = author,
-//        published = published,
-//        content = content,
-//        likedByMe = likedByMe,
-//        likes = likes,
-//        shares = shares,
-//        visibility = visibility,
-//        videoUrl = videoUrl
-//    )
+    fun toDto() = FeedFragment.Post(
+        id = id,
+        author = author,
+        published = published,
+        content = content,
+        authorAvatar = authorAvatar,
+        likedByMe = likedByMe,
+        likes = likes,
+        shares = shares,
+        visibility = visibility,
+        videoUrl = videoUrl
+    )
 
 }
