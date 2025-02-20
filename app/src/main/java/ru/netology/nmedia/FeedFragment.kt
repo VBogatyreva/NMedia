@@ -12,6 +12,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 
@@ -84,6 +86,13 @@ class FeedFragment : Fragment() {
             binding.progressBar.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
+            if(state.error) {
+                Snackbar.make(
+                    binding.root,
+                    state.messageCodeError,
+                    BaseTransientBottomBar.LENGTH_LONG
+                ).show()
+            }
         }
 
         binding.retryButton.setOnClickListener {

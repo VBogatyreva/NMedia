@@ -29,7 +29,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                _data.postValue(FeedModel(error = true))
+                _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
             }
         })
     }
@@ -63,7 +63,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                _data.postValue(FeedModel(error = true))
+                _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
             }
         })
     }
@@ -82,20 +82,22 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                _data.postValue(FeedModel(error = true))
+                _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
             }
         })
     }
 
     fun removeById(id: Long) {
+
         val old = _data.value?.posts.orEmpty()
         _data.postValue(
             _data.value?.copy(posts = _data.value?.posts.orEmpty()
                 .filter { it.id != id }
             )
         )
-        repository.removeByIdAsync(id, object : PostRepository.GetAllCallback<Any> {
-            override fun onSuccess(posts: Any) {
+
+        repository.removeByIdAsync(id, object : PostRepository.GetAllCallback<Unit> {
+            override fun onSuccess(posts: Unit) {
             }
             override fun onError(e: Exception) {
                 _data.postValue(_data.value?.copy(posts = old))
@@ -105,6 +107,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun edit(post: FeedFragment.Post) {
+
         edited.value?.let {
             edited.value = post
         }
@@ -118,7 +121,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     _postCreated.postValue(Unit)
                 }
                 override fun onError(e: Exception) {
-                    _data.postValue(FeedModel(error = true))
+                    _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
                 }
             })
         }

@@ -27,6 +27,7 @@ android {
     }
 
     buildFeatures.viewBinding = true
+    buildFeatures.buildConfig = true
 
     buildTypes {
         release {
@@ -36,9 +37,11 @@ android {
                 "proguard-rules.pro"
             )
             manifestPlaceholders["usesCleartextTraffic"] = false
+            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
         }
         debug {
             manifestPlaceholders["usesCleartextTraffic"] = true
+            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
         }
     }
     compileOptions {
@@ -88,9 +91,12 @@ dependencies {
 
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
     implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     implementation ("com.github.bumptech.glide:glide:4.13.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
 
 }
