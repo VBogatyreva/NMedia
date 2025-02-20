@@ -1,5 +1,6 @@
 package ru.netology.nmedia
 
+import com.google.firebase.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -12,7 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 
-private const val BASE_URL = "${BuildConfig.BASE_URL}/api/slow/"
+private const val BASE_URL = "http://10.0.2.2:9999/api/slow"
 
 val logging = HttpLoggingInterceptor().apply {
     if (BuildConfig.DEBUG) {
