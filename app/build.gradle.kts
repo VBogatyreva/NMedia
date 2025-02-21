@@ -29,6 +29,22 @@ android {
     buildFeatures.viewBinding = true
     buildFeatures.buildConfig = true
 
+//    buildTypes {
+//        release {
+//            isMinifyEnabled = false
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//            manifestPlaceholders["usesCleartextTraffic"] = false
+//            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
+//        }
+//        debug {
+//            manifestPlaceholders["usesCleartextTraffic"] = true
+//            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
+//        }
+//    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -37,13 +53,14 @@ android {
                 "proguard-rules.pro"
             )
             manifestPlaceholders["usesCleartextTraffic"] = false
-            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
+            buildConfigField ("String", "BASE_URL", "\"http://10.0.2.2:9999\"")
         }
         debug {
             manifestPlaceholders["usesCleartextTraffic"] = true
-            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
+            buildConfigField ("String", "BASE_URL", "\"http://10.0.2.2:9999\"")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

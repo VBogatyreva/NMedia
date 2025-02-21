@@ -86,6 +86,7 @@ class FeedFragment : Fragment() {
             binding.progressBar.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
+
             if(state.error) {
                 Snackbar.make(
                     binding.root,

@@ -113,7 +113,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     fun save() {
         edited.value?.let {
             repository.saveAsync(it, object : PostRepository.GetAllCallback<FeedFragment.Post> {

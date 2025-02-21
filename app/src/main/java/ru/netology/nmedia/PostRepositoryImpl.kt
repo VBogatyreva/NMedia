@@ -169,4 +169,5 @@ class PostRepositoryImpl : PostRepository {
     override fun shareById(id: Long) { }
     override fun sawById(id: Long) { }
     override fun video() { }
+
 }

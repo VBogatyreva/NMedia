@@ -12,7 +12,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-
 private const val BASE_URL = "http://10.0.2.2:9999/api/slow"
 
 val logging = HttpLoggingInterceptor().apply {

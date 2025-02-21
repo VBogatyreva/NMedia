@@ -7,7 +7,6 @@ interface PostRepository {
 //    fun removeById(id:Long)
 //    fun save(post:FeedFragment.Post)
 //    fun getPostById(id: Long): FeedFragment.Post
-
     fun shareById(id:Long)
     fun sawById(id:Long)
     fun video()
