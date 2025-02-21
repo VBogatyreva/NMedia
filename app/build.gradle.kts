@@ -37,13 +37,14 @@ android {
                 "proguard-rules.pro"
             )
             manifestPlaceholders["usesCleartextTraffic"] = false
-            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
+            buildConfigField ("String", "BASE_URL", "\"http://10.0.2.2:9999\"")
         }
         debug {
             manifestPlaceholders["usesCleartextTraffic"] = true
-            buildConfigField ("String", "BASE_URL", "http://10.0.2.2:9999")
+            buildConfigField ("String", "BASE_URL", "\"http://10.0.2.2:9999\"")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -97,6 +98,7 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation ("com.android.support:design:28.0.0")
 
 
 }
