@@ -19,6 +19,7 @@ val logging = HttpLoggingInterceptor().apply {
     }
 }
 
+
 val client = OkHttpClient.Builder()
     .addInterceptor(logging)
     .build()
