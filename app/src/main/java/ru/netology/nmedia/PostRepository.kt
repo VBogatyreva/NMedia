@@ -1,7 +1,6 @@
 package ru.netology.nmedia
 
 interface PostRepository {
-
 //    fun getAll() : List<FeedFragment.Post>
 //    fun likeById(id:Long)
 //    fun removeById(id:Long)

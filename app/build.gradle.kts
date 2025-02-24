@@ -1,5 +1,5 @@
 plugins {
-//    alias(libs.plugins.androidApplication)
+
     alias(libs.plugins.jetbrainsKotlinAndroid)
 
     id ("com.android.application")
@@ -7,10 +7,7 @@ plugins {
     id ("org.jetbrains.kotlin.kapt")
     id("com.google.gms.google-services")
 
-
 }
-
-
 
 android {
     namespace = "ru.netology.nmedia"
@@ -87,7 +84,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation ("com.google.android.gms:play-services-base:18.5.0")
     implementation ("com.google.firebase:firebase-messaging-ktx")
-    implementation ("com.google.firebase:firebase-messaging:24.0.0")
+    implementation ("com.google.firebase:firebase-messaging:24.1.0")
     implementation ("com.google.code.gson:gson:2.10.1")
 
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
@@ -98,7 +95,5 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation ("com.android.support:design:28.0.0")
-
 
 }

@@ -1,6 +1,5 @@
 package ru.netology.nmedia
 
-import com.google.firebase.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -12,7 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-private const val BASE_URL = "http://10.0.2.2:9999/api/slow"
+private const val BASE_URL = "${BuildConfig.BASE_URL}/api/slow/"
 
 val logging = HttpLoggingInterceptor().apply {
     if (BuildConfig.DEBUG) {
@@ -26,7 +25,7 @@ val client = OkHttpClient.Builder()
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
-    .baseUrl(ru.netology.nmedia.BASE_URL)
+    .baseUrl(BASE_URL)
     .client(client)
     .build()
 

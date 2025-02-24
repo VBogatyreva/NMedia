@@ -92,7 +92,9 @@ class FeedFragment : Fragment() {
                     binding.root,
                     state.messageCodeError,
                     BaseTransientBottomBar.LENGTH_LONG
-                ).show()
+                )
+                    .setAnchorView(binding.fab)
+                    .show()
             }
         }
 
