@@ -4,15 +4,22 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: PostRepository = PostRepositoryImpl()
+    private val repository: PostRepository = PostRepositoryImpl(AppDb.getInstance(context = application).postDao())
 
-    val _data = MutableLiveData(FeedModel())
-    val data: LiveData<FeedModel>
-        get() = _data
-    val edited = MutableLiveData(empty)
+    val data: LiveData<FeedModel> = repository.data.map{
+        FeedModel(posts = it, empty = it.isEmpty())
+    }
+    private val _dataState = MutableLiveData<FeedModelState>()
+    val dataState: LiveData<FeedModelState>
+        get() = _dataState
+
+    private val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
@@ -21,17 +28,14 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         loadPosts()
     }
 
-    fun loadPosts() {
-        _data.value = FeedModel(loading = true)
-        repository.getAllAsync(object : PostRepository.GetAllCallback<List<FeedFragment.Post>> {
-            override fun onSuccess(posts: List<FeedFragment.Post>) {
-                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
-            }
-
-            override fun onError(e: Exception) {
-                _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
-            }
-        })
+    fun loadPosts() = viewModelScope.launch {
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            repository.getAll()
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
     }
 
     private var draft = ""
@@ -45,69 +49,39 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getDraft() = draft
 
-    fun shareById(id: Long) = repository.shareById(id)
-    fun sawById(id: Long) = repository.sawById(id)
-    fun video() = repository.video()
+    suspend fun shareById(id: Long) = repository.shareById(id)
+    suspend fun sawById(id: Long) = repository.sawById(id)
+    suspend fun video() = repository.video()
 
-    fun likeById(id: Long) {
+    fun likeById(id: Long) = viewModelScope.launch {
+        try {
+            repository.likeById(id)
 
-        repository.likeByIdAsync(id, object : PostRepository.GetAllCallback<FeedFragment.Post> {
-            override fun onSuccess(posts: FeedFragment.Post) {
-                _data.postValue(
-                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                        .map {
-                            if (it.id != id) it
-                            else posts
-                        })
-                )
-            }
-
-            override fun onError(e: Exception) {
-                _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
-            }
-        })
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
     }
 
-    fun unlikeById(id: Long) {
+    fun unlikeById(id: Long)  = viewModelScope.launch {
+        try {
+            repository.unlikeById(id)
 
-        repository.unlikeByIdAsync(id, object : PostRepository.GetAllCallback<FeedFragment.Post> {
-            override fun onSuccess(posts: FeedFragment.Post) {
-                _data.postValue(
-                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                        .map {
-                            if (it.id != id) it
-                            else posts
-                        })
-                )
-            }
-
-            override fun onError(e: Exception) {
-                _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
-            }
-        })
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
     }
 
-    fun removeById(id: Long) {
+    fun removeById(id: Long) = viewModelScope.launch {
+        try {
+            repository.removeById(id)
 
-        val old = _data.value?.posts.orEmpty()
-        _data.postValue(
-            _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                .filter { it.id != id }
-            )
-        )
-
-        repository.removeByIdAsync(id, object : PostRepository.GetAllCallback<Unit> {
-            override fun onSuccess(posts: Unit) {
-            }
-            override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(posts = old))
-            }
-        })
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
     }
 
 
     fun edit(post: FeedFragment.Post) {
-
         edited.value?.let {
             edited.value = post
         }
@@ -115,14 +89,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun save() {
         edited.value?.let {
-            repository.saveAsync(it, object : PostRepository.GetAllCallback<FeedFragment.Post> {
-                override fun onSuccess(posts: FeedFragment.Post) {
-                    _postCreated.postValue(Unit)
+
+            viewModelScope.launch {
+                try {
+                    repository.save(it)
+                    _dataState.value = FeedModelState()
+                    _postCreated.value = Unit
+                } catch (e: Exception) {
+                    _dataState.value = FeedModelState(error = true)
                 }
-                override fun onError(e: Exception) {
-                    _data.postValue(FeedModel(error = true, messageCodeError = e.message.toString()))
-                }
-            })
+            }
         }
         edited.value = empty
     }

@@ -1,173 +1,92 @@
 package ru.netology.nmedia
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import ru.netology.nmedia.PostRepository.GetAllCallback
+import androidx.lifecycle.map
+import okio.IOException
 
-class PostRepositoryImpl : PostRepository {
+class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
 
-    override fun getAllAsync(callback: GetAllCallback<List<FeedFragment.Post>>) {
-        PostApi.retrofitService.getAll()
-            .enqueue(object : Callback<List<FeedFragment.Post>> {
-                override fun onResponse(
-                    call: Call<List<FeedFragment.Post>>,
-                    response: Response<List<FeedFragment.Post>>
-                ) {
-                    if (!response.isSuccessful) {
-                        callback.onError(RuntimeException(response.message()))
-                        return
-                    }
-                    callback.onSuccess(response.body() ?: run {
-                        callback.onError(
-                            RuntimeException(
-                                response.message() + response.code().toString()
-                            )
-                        )
-                        return
-                    })
-                }
+    override val data = dao.getAll().map(List<PostEntity>::toDto)
 
-                override fun onFailure(call: Call<List<FeedFragment.Post>>, e: Throwable) {
-                    callback.onError(RuntimeException(e))
-                }
-            })
+    override suspend fun getAll() {
+        try {
+            val response = PostApi.retrofitService.getAll()
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(body.toEntity())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
-    override fun likeByIdAsync(id: Long, callback: GetAllCallback<FeedFragment.Post>) {
-        PostApi.retrofitService.likeById(id)
-            .enqueue(object : Callback<FeedFragment.Post> {
-                override fun onResponse(
-                    call: Call<FeedFragment.Post>,
-                    response: Response<FeedFragment.Post>
-                ) {
-                    if (!response.isSuccessful) {
-                        callback.onError(RuntimeException(response.message()))
-                        return
-                    }
-                    callback.onSuccess(response.body() ?: run {
-                        callback.onError(
-                            RuntimeException(
-                                response.message() + response.code().toString()
-                            )
-                        )
-                        return
-                    })
-                }
 
-                override fun onFailure(call: Call<FeedFragment.Post>, e: Throwable) {
-                    callback.onError(RuntimeException(e))
-                }
-            })
+    override suspend fun likeById(id: Long) {
+        try {
+            dao.likeById(id)
+            val response = PostApi.retrofitService.likeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
-    override fun unlikeByIdAsync(id: Long, callback: GetAllCallback<FeedFragment.Post>) {
-        PostApi.retrofitService.unlikeById(id)
-            .enqueue(object : Callback<FeedFragment.Post> {
-                override fun onResponse(
-                    call: Call<FeedFragment.Post>,
-                    response: Response<FeedFragment.Post>
-                ) {
-                    if (!response.isSuccessful) {
-                        callback.onError(RuntimeException(response.message()))
-                        return
-                    }
-                    callback.onSuccess(response.body() ?: run {
-                        callback.onError(
-                            RuntimeException(
-                                response.message() + response.code().toString()
-                            )
-                        )
-                        return
-                    })
-                }
-
-                override fun onFailure(call: Call<FeedFragment.Post>, e: Throwable) {
-                    callback.onError(RuntimeException(e))
-                }
-            })
+    override suspend fun unlikeById(id: Long) {
+        try {
+            dao.likeById(id)
+            val response = PostApi.retrofitService.unlikeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
-    override fun saveAsync(post: FeedFragment.Post, callback: GetAllCallback<FeedFragment.Post>){
-        PostApi.retrofitService.save(post)
-            .enqueue(object : Callback<FeedFragment.Post> {
-                override fun onResponse(
-                    call: Call<FeedFragment.Post>,
-                    response: Response<FeedFragment.Post>
-                ) {
-                    if (!response.isSuccessful) {
-                        callback.onError(RuntimeException(response.message()))
-                        return
-                    }
-                    callback.onSuccess(response.body() ?: run {
-                        callback.onError(
-                            RuntimeException(
-                                response.message() + response.code().toString()
-                            )
-                        )
-                        return
-                    })
-                }
-
-                override fun onFailure(call: Call<FeedFragment.Post>, e: Throwable) {
-                    callback.onError(RuntimeException(e))
-                }
-            })
+    override suspend fun removeById(id: Long) {
+        try {
+            dao.removeById(id)
+            val response = PostApi.retrofitService.removeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
-    override fun removeByIdAsync(id: Long, callback: GetAllCallback<Unit>) {
-        PostApi.retrofitService.removeById(id)
-            .enqueue(object : Callback<Unit> {
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                    if (!response.isSuccessful) {
-                        callback.onError(RuntimeException(response.message()))
-                        return
-                    }
-                    callback.onSuccess(response.body() ?: run {
-                        callback.onError(
-                            RuntimeException(
-                                response.message() + response.code().toString()
-                            )
-                        )
-                        return
-                    })
-                }
-
-                override fun onFailure(call: Call<Unit>, e: Throwable) {
-                    callback.onError(RuntimeException(e))
-                }
-            })
+    override suspend fun save(post: FeedFragment.Post) {
+        try {
+            val response = PostApi.retrofitService.save(post)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
-    override fun getPostById (id: Long, callback: GetAllCallback<FeedFragment.Post>) {
-        PostApi.retrofitService.getPostById(id)
-            .enqueue(object : Callback<FeedFragment.Post> {
-                override fun onResponse(
-                    call: Call<FeedFragment.Post>,
-                    response: Response<FeedFragment.Post>
-                ) {
-                    if (!response.isSuccessful) {
-                        callback.onError(RuntimeException(response.message()))
-                        return
-                    }
-                    callback.onSuccess(response.body() ?: run {
-                        callback.onError(
-                            RuntimeException(
-                                response.message() + response.code().toString()
-                            )
-                        )
-                        return
-                    })
-                }
-
-                override fun onFailure(call: Call<FeedFragment.Post>, e: Throwable) {
-                    callback.onError(RuntimeException(e))
-                }
-            })
-    }
-
-    override fun shareById(id: Long) { }
-    override fun sawById(id: Long) { }
-    override fun video() { }
-
+    override suspend fun getPostById(id: Long) {}
+    override suspend fun shareById(id: Long) {}
+    override suspend fun sawById(id: Long) {}
+    override suspend fun video() {}
 }

@@ -1,26 +1,20 @@
 package ru.netology.nmedia
 
+import androidx.lifecycle.LiveData
+
 interface PostRepository {
 
-//    fun getAll() : List<FeedFragment.Post>
-//    fun likeById(id:Long)
-//    fun removeById(id:Long)
-//    fun save(post:FeedFragment.Post)
-//    fun getPostById(id: Long): FeedFragment.Post
-    fun shareById(id:Long)
-    fun sawById(id:Long)
-    fun video()
+    val data: LiveData<List<FeedFragment.Post>>
 
-    fun getPostById(id: Long, callback: GetAllCallback<FeedFragment.Post>)
+    suspend fun getAll()
+    suspend fun likeById(id: Long)
+    suspend fun unlikeById(id: Long)
+    suspend fun removeById(id: Long)
+    suspend fun save(post: FeedFragment.Post)
 
-    fun getAllAsync(callback: GetAllCallback<List<FeedFragment.Post>>)
-    fun likeByIdAsync(id: Long, callback: GetAllCallback <FeedFragment.Post>)
-    fun unlikeByIdAsync(id: Long, callback: GetAllCallback <FeedFragment.Post>)
-    fun removeByIdAsync(id: Long, callback: GetAllCallback <Unit>)
-    fun saveAsync(post: FeedFragment.Post, callback: GetAllCallback <FeedFragment.Post>)
 
-    interface GetAllCallback<T> {
-        fun onSuccess(posts:T) {}
-        fun onError(e:Exception) {}
-    }
+    suspend fun getPostById(id: Long)
+    suspend fun shareById(id:Long)
+    suspend fun sawById(id:Long)
+    suspend fun video()
 }

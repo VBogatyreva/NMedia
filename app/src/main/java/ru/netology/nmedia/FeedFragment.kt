@@ -48,10 +48,9 @@ class FeedFragment : Fragment() {
                 }
                 val shareIntent = Intent.createChooser(intent, getString(R.string.share))
                 startActivity(shareIntent)
-                viewModel.shareById(post.id)
             }
             override fun onSaw(post: Post) {
-                viewModel.sawById(post.id)
+//                viewModel.sawById(post.id)
             }
             override fun onRemove(post: Post) {
                 viewModel.removeById(post.id)
@@ -66,7 +65,7 @@ class FeedFragment : Fragment() {
             }
 
             override fun onVideo(post : Post) {
-                post.videoUrl?.let {viewModel.video()}
+//                post.videoUrl?.let {viewModel.video()}
                 if (!post.videoUrl.isNullOrEmpty()) {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.videoUrl))
                     startActivity(intent)

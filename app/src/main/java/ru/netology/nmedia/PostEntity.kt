@@ -17,24 +17,6 @@ data class PostEntity(
     val visibility: Long,
     val videoUrl: String?
 ) {
-
-    companion object {
-        fun fromDto(dto: FeedFragment.Post) = with(dto) {
-            PostEntity(
-                id = id,
-                author = author,
-                published = published,
-                content = content,
-                authorAvatar = authorAvatar,
-                likedByMe = likedByMe,
-                likes = likes,
-                shares = shares,
-                visibility = visibility,
-                videoUrl = videoUrl
-            )
-        }
-    }
-
     fun toDto() = FeedFragment.Post(
         id = id,
         author = author,
@@ -48,4 +30,21 @@ data class PostEntity(
         videoUrl = videoUrl
     )
 
+    companion object {
+        fun fromDto(dto: FeedFragment.Post) = PostEntity(
+            dto.id,
+            dto.author,
+            dto.published,
+            dto.content,
+            dto.authorAvatar,
+            dto.likedByMe,
+            dto.likes,
+            dto.shares,
+            dto.visibility,
+            dto.videoUrl
+            )
+
+    }
 }
+fun List<PostEntity>.toDto(): List<FeedFragment.Post> = map(PostEntity::toDto)
+fun List<FeedFragment.Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)
