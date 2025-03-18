@@ -15,7 +15,8 @@ data class PostEntity(
     val likes: Long,
     val shares: Long,
     val visibility: Long,
-    val videoUrl: String?
+    val videoUrl: String?,
+    val isDeleted: Boolean = false
 ) {
     fun toDto() = FeedFragment.Post(
         id = id,

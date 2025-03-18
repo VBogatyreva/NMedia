@@ -30,6 +30,14 @@ interface PostDao {
 
     @Query("""
         UPDATE PostEntity SET
+        likes = likes - 1,
+        likedByMe = 0
+        WHERE id = :id
+        """)
+    suspend fun unlikeById(id:Long)
+
+    @Query("""
+        UPDATE PostEntity SET
         shares = shares + 1
         WHERE id = :id
         """)
@@ -43,11 +51,19 @@ interface PostDao {
         """)
     suspend fun sawById(id:Long)
 
+
     @Query("DELETE FROM PostEntity WHERE id = :id")
     suspend fun removeById(id:Long)
 
     suspend fun save(post: PostEntity) =
         if(post.id == 0L) insert(post) else updateContentById(post.id, post.content)
+
+
+    @Query("UPDATE PostEntity SET isDeleted = 1 WHERE id = :id")
+    suspend fun markAsDeleted(id: Long)
+
+    @Query("UPDATE PostEntity SET isDeleted = 0 WHERE id = :id")
+    suspend fun unmarkAsDeleted(id: Long)
 
 
 }
