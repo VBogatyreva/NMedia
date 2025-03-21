@@ -8,7 +8,7 @@ import androidx.room.Query
 
 @Dao
 interface PostDao {
-    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
+    @Query("SELECT * FROM PostEntity WHERE isDeleted = 0 ORDER BY id DESC")
     fun getAll() : LiveData<List<PostEntity>>
 
     @Insert(onConflict = REPLACE)
@@ -27,14 +27,6 @@ interface PostDao {
         WHERE id = :id
         """)
     suspend fun likeById(id:Long)
-
-    @Query("""
-        UPDATE PostEntity SET
-        likes = likes - 1,
-        likedByMe = 0
-        WHERE id = :id
-        """)
-    suspend fun unlikeById(id:Long)
 
     @Query("""
         UPDATE PostEntity SET
