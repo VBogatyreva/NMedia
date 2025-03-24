@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.NewPostFragment.Companion.textArg
@@ -80,11 +81,9 @@ class FeedFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progressBar.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
-            binding.emptyText.isVisible = state.empty
 
             if(state.error) {
                 Snackbar.make(
@@ -95,6 +94,29 @@ class FeedFragment : Fragment() {
                     .setAnchorView(binding.fab)
                     .show()
             }
+        }
+
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+            binding.emptyText.isVisible = state.empty
+        }
+
+        viewModel.newerCount.observe(viewLifecycleOwner) { state ->
+            binding.newPosts.isVisible = state > 0
+        }
+
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0 && binding.list.isShown && adapter.itemCount > 0) {
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }
+        })
+
+        binding.newPosts.setOnClickListener {
+            viewModel.loadVisiblePosts()
+            binding.newPosts.isVisible = false
+            binding.list.smoothScrollToPosition(0)
         }
 
         binding.retryButton.setOnClickListener {
@@ -117,7 +139,8 @@ class FeedFragment : Fragment() {
         val likes: Long,
         val shares: Long,
         val visibility: Long,
-        val videoUrl: String?
+        val videoUrl: String?,
+        val hiddenPosts: Boolean
     )
 }
 

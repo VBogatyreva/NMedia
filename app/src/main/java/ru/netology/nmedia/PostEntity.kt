@@ -16,7 +16,9 @@ data class PostEntity(
     val shares: Long,
     val visibility: Long,
     val videoUrl: String?,
-    val isDeleted: Boolean = false
+    val hiddenPosts: Boolean = true
+
+
 ) {
     fun toDto() = FeedFragment.Post(
         id = id,
@@ -28,7 +30,8 @@ data class PostEntity(
         likes = likes,
         shares = shares,
         visibility = visibility,
-        videoUrl = videoUrl
+        videoUrl = videoUrl,
+        hiddenPosts = hiddenPosts
     )
 
     companion object {
@@ -42,7 +45,8 @@ data class PostEntity(
             dto.likes,
             dto.shares,
             dto.visibility,
-            dto.videoUrl
+            dto.videoUrl,
+            dto.hiddenPosts
             )
 
     }

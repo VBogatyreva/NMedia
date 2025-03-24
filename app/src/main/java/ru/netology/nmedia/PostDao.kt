@@ -1,15 +1,21 @@
 package ru.netology.nmedia
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PostDao {
-    @Query("SELECT * FROM PostEntity WHERE isDeleted = 0 ORDER BY id DESC")
-    fun getAll() : LiveData<List<PostEntity>>
+    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
+    fun getAll() : Flow<List<PostEntity>>
+
+    @Query("SELECT * FROM PostEntity WHERE hiddenPosts=0 ORDER BY id DESC")
+    fun getAllVisible(): Flow<List<PostEntity>>
+
+    @Query("UPDATE PostEntity SET hiddenPosts = 0 ")
+    suspend fun showAll()
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(post: PostEntity)
@@ -49,13 +55,5 @@ interface PostDao {
 
     suspend fun save(post: PostEntity) =
         if(post.id == 0L) insert(post) else updateContentById(post.id, post.content)
-
-
-    @Query("UPDATE PostEntity SET isDeleted = 1 WHERE id = :id")
-    suspend fun markAsDeleted(id: Long)
-
-    @Query("UPDATE PostEntity SET isDeleted = 0 WHERE id = :id")
-    suspend fun unmarkAsDeleted(id: Long)
-
 
 }

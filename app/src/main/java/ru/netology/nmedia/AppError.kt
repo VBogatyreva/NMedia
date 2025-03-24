@@ -1,7 +1,20 @@
 package ru.netology.nmedia
 
-sealed class AppError(private val code: String): RuntimeException()
+import android.database.SQLException
+import java.io.IOException
 
-class ApiError(val status: Int, code: String): AppError(code)
-object NetworkError : AppError(code = "Error_NO_Network")
-object UnknownError: AppError(code = "Error_Unknown")
+sealed class AppError(var code: String) : RuntimeException() {
+    companion object {
+        fun from(e: Throwable): AppError = when (e) {
+            is AppError -> e
+            is SQLException -> DbError
+            is IOException -> NetworkError
+            else -> UnknownError
+        }
+    }
+}
+
+class ApiError(val status: Int, code: String) : AppError(code)
+object NetworkError : AppError("Error_NO_Network")
+object DbError : AppError("Error_db")
+object UnknownError : AppError("Error_Unknown")

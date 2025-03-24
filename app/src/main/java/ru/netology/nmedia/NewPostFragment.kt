@@ -41,10 +41,6 @@ class NewPostFragment : Fragment() {
         }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
-            //так как теперь мы храним посты в базе данных,
-            // запрашивать полный список постов после добавления или редактирования одного поста
-            // больше не требуется
-//            viewModel.loadPosts()
             findNavController().navigateUp()
         }
 

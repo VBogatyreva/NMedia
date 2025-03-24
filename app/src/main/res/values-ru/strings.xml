@@ -27,5 +27,6 @@
     <string name="empty_posts">Нет постов</string>
     <string name="error_loading">Ошибка загрузки</string>
     <string name="retry_loading">Повторная загрузка</string>
+    <string name="new_posts">Новые записи</string>
 
 </resources>

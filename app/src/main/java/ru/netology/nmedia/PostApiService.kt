@@ -34,6 +34,9 @@ interface PostApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<FeedFragment.Post>>
 
+    @GET("posts/{id}/newer")
+    suspend fun getNewer(@Path("id") id: Long): Response<List<FeedFragment.Post>>
+
     @POST("posts/{id}/likes")
     suspend fun likeById(@Path("id") id: Long): Response<FeedFragment.Post>
 
