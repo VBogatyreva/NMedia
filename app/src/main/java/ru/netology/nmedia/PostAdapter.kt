@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ interface OnInteractionListener {
     fun onSaw (post : FeedFragment.Post) {}
     fun onVideo (post : FeedFragment.Post) {}
     fun onOpen (post : FeedFragment.Post) {}
+    fun getPostById(id: Long)
 
 }
 
@@ -108,6 +110,14 @@ class PostsAdapter(
                 root.setOnClickListener {
                     onInteractionListener.onOpen(post)
                 }
+
+                postImage.setOnClickListener {
+                    onInteractionListener.getPostById(post.id)
+                    it.findNavController()
+                        .navigate(
+                            R.id.action_feedFragment_to_imageFragment
+                        )
+                }
             }
         }
     }
@@ -121,5 +131,4 @@ class PostsAdapter(
             return oldItem == newItem
         }
     }
-
 }

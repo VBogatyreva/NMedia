@@ -4,6 +4,7 @@
     <string name="no">no</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_remove">Remove</string>
+    <string name="menu_save">Save</string>
     <string name="text_edit">Edit Message</string>
     <string name="post_text">Post Text</string>
     <string name="text_post_save">Save</string>
@@ -19,12 +20,21 @@
     <string name="channel_remote_name">Server notifications</string>
     <string name="channel_remote_description">Notifications from remote server</string>
     <string name="notification_new_post">%1$s published new post</string>
-    <string name="notification_error_title"/>
-    <string name="notification_error_text"/>
+    <string name="notification_error_title" />
+    <string name="notification_error_text" />
     <string name="empty_posts">Empty posts</string>
     <string name="error_loading">Error loading</string>
     <string name="retry_loading">Retry loading</string>
     <string name="new_posts">New posts</string>
+    <string name="post_image">Post image</string>
+
+    <string name="clear">Clear</string>
+    <string name="photo_pick_error">Photo pick error</string>
+    <string name="description_select_photo">Select photo</string>
+    <string name="description_take_photo">Take photo</string>
+    <string name="description_photo">Photo</string>
+    <string name="remove">Remove</string>
+
 
 
 </resources>

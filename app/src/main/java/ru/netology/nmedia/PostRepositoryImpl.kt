@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okio.IOException
 
 class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
@@ -111,7 +113,44 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         }
     }
 
-    override suspend fun getPostById(id: Long) {}
+    override suspend fun saveWithAttachment(post: FeedFragment.Post, upload: MediaUpload) {
+        try {
+            val media = uploadMedia(upload)
+            val postWithAttachment =
+                post.copy(attachment = FeedFragment.Attachment(media.id, AttachmentType.IMAGE))
+            save(postWithAttachment)
+        } catch (e: AppError) {
+            throw e
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun uploadMedia(upload: MediaUpload): Media {
+        try {
+            val media = MultipartBody.Part.createFormData(
+                "file", upload.file.name, upload.file.asRequestBody()
+            )
+
+            val response = PostApi.retrofitService.uploadMedia(media)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            return response.body() ?: throw ApiError(response.code(), response.message())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun getPostById(id: Long?): FeedFragment.Post? {
+        return if(id!=null) dao.getById(id).toDto() else null
+    }
+
     override suspend fun shareById(id: Long) {}
     override suspend fun sawById(id: Long) {}
     override suspend fun video() {}
