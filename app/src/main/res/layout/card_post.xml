@@ -111,13 +111,35 @@
             app:layout_constraintTop_toBottomOf="@id/videoLayout"
             tools:text="@sample/assets.json/data/content" />
 
+        <ImageView
+            android:id="@+id/attachment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content"
+            android:contentDescription="@string/post_image" />
+
+
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="content"/>
+            app:constraint_referenced_ids="attachment"/>
+
+        <ImageView
+            android:id="@+id/postImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/likes"
@@ -153,6 +175,7 @@
             app:layout_constraintTop_toTopOf="@+id/barrierBottom"
             tools:text="@sample/assets.json/data/visibility"
             style="@style/Widget.AppTheme.VisibilityButton" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

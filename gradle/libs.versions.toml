@@ -1,5 +1,7 @@
 [versions]
 agp = "8.7.3"
+imagepicker = "2.1)"
+imagepickerVersion = "2.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.0"
 junit = "4.13.2"
@@ -11,10 +13,14 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 firebaseMessagingKtx = "24.0.0"
 recyclerview = "1.4.0"
+playServicesCastFramework = "22.0.0"
+glance = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+imagepicker = { module = "com.github.dhaval2404:imagepicker", version.ref = "imagepicker" }
+imagepicker-v21 = { module = "com.github.dhaval2404:imagepicker", version.ref = "imagepickerVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -23,6 +29,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+play-services-cast-framework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playServicesCastFramework" }
+androidx-glance = { group = "androidx.glance", name = "glance", version.ref = "glance" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

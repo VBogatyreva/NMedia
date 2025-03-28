@@ -14,7 +14,10 @@ interface PostRepository {
     suspend fun removeById(id: Long)
     suspend fun save(post: FeedFragment.Post)
 
-    suspend fun getPostById(id: Long)
+    suspend fun saveWithAttachment(post: FeedFragment.Post, upload: MediaUpload)
+    suspend fun uploadMedia(upload: MediaUpload): Media
+
+    suspend fun getPostById(id: Long?): FeedFragment.Post?
     suspend fun shareById(id:Long)
     suspend fun sawById(id:Long)
     suspend fun video()

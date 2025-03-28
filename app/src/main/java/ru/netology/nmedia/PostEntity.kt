@@ -1,5 +1,6 @@
 package ru.netology.nmedia
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -16,7 +17,10 @@ data class PostEntity(
     val shares: Long,
     val visibility: Long,
     val videoUrl: String?,
-    val hiddenPosts: Boolean = true
+    val hiddenPosts: Boolean = true,
+
+    @Embedded
+    val attachment: AttachmentEmbeddable?
 
 
 ) {
@@ -31,7 +35,8 @@ data class PostEntity(
         shares = shares,
         visibility = visibility,
         videoUrl = videoUrl,
-        hiddenPosts = hiddenPosts
+        hiddenPosts = hiddenPosts,
+        attachment = attachment?.toDto()
     )
 
     companion object {
@@ -46,10 +51,25 @@ data class PostEntity(
             dto.shares,
             dto.visibility,
             dto.videoUrl,
-            dto.hiddenPosts
+            dto.hiddenPosts,
+            AttachmentEmbeddable.fromDto(dto.attachment)
             )
 
     }
 }
+
+data class AttachmentEmbeddable(
+    var url: String,
+    var type: AttachmentType
+) {
+    fun toDto() = FeedFragment.Attachment(url, type)
+
+    companion object {
+        fun fromDto(dto: FeedFragment.Attachment?) = dto?.let {
+            AttachmentEmbeddable(it.url, it.type)
+        }
+    }
+}
+
 fun List<PostEntity>.toDto(): List<FeedFragment.Post> = map(PostEntity::toDto)
 fun List<FeedFragment.Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)

@@ -78,6 +78,10 @@ class FeedFragment : Fragment() {
                     Bundle().apply
                     { textArg = post.id.toString() })
             }
+
+            override fun getPostById(id: Long){
+                viewModel.getPostById(id)
+            }
         })
 
         binding.list.adapter = adapter
@@ -140,7 +144,12 @@ class FeedFragment : Fragment() {
         val shares: Long,
         val visibility: Long,
         val videoUrl: String?,
-        val hiddenPosts: Boolean
+        val hiddenPosts: Boolean,
+        val attachment: Attachment? = null
+    )
+    data class Attachment(
+        val url: String,
+        val type: AttachmentType
     )
 }
 

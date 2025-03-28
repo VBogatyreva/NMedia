@@ -4,12 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
+import androidx.room.TypeConverter
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PostDao {
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
     fun getAll() : Flow<List<PostEntity>>
+
+    @Query("SELECT * FROM PostEntity WHERE id = :id")
+    suspend fun getById(id: Long): PostEntity
 
     @Query("SELECT * FROM PostEntity WHERE hiddenPosts=0 ORDER BY id DESC")
     fun getAllVisible(): Flow<List<PostEntity>>
@@ -57,3 +61,13 @@ interface PostDao {
         if(post.id == 0L) insert(post) else updateContentById(post.id, post.content)
 
 }
+
+class Converters {
+    @TypeConverter
+    fun toAttachmentType(value: String) = enumValueOf<AttachmentType>(value)
+
+    @TypeConverter
+    fun fromAttachmentType(value: AttachmentType) = value.name
+}
+
+
