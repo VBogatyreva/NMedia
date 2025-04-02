@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.databinding.CardPostBinding
 
 interface OnInteractionListener {
@@ -20,6 +20,7 @@ interface OnInteractionListener {
     fun onVideo (post : FeedFragment.Post) {}
     fun onOpen (post : FeedFragment.Post) {}
     fun getPostById(id: Long)
+    fun onImage(post: FeedFragment.Post)
 
 }
 
@@ -107,16 +108,21 @@ class PostsAdapter(
                     }.show()
                 }
 
-                root.setOnClickListener {
-                    onInteractionListener.onOpen(post)
+                postImage.visibility = if (post.attachment?.type == AttachmentType.IMAGE && !post.attachment.url.isNullOrEmpty()) View.VISIBLE else View.GONE
+                postImage.setOnClickListener {
+                    if (post.attachment?.type == AttachmentType.IMAGE && !post.attachment.url.isNullOrEmpty()) {
+                        onInteractionListener.onImage(post)
+                    } else {
+                        Snackbar.make(
+                            binding.root,
+                            R.string.error_invalid_image,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
                 }
 
-                postImage.setOnClickListener {
-                    onInteractionListener.getPostById(post.id)
-                    it.findNavController()
-                        .navigate(
-                            R.id.action_feedFragment_to_imageFragment
-                        )
+                root.setOnClickListener {
+                    onInteractionListener.onOpen(post)
                 }
             }
         }
@@ -132,3 +138,4 @@ class PostsAdapter(
         }
     }
 }
+

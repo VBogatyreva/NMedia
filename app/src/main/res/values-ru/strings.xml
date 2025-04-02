@@ -38,4 +38,8 @@
     <string name="description_photo">Фотография</string>
     <string name="remove">Удалить</string>
 
+    <string name="error_invalid_image">Невозможно открыть изображение</string>
+    <string name="error_invalid_image_url">Неверный URL изображения</string>
+    <string name="error_not_an_image">Это вложение не является изображением</string>
+
 </resources>

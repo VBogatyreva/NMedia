@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.databinding.FragmentImageBinding
 
 class ImageFragment : Fragment() {
@@ -33,24 +34,41 @@ class ImageFragment : Fragment() {
         viewModel.currentPost.observe(viewLifecycleOwner) { post ->
             post ?: return@observe
 
-            post.attachment?.url?.let { url ->
-                loadImage(url)
-            } ?: run {binding.postImage.isVisible = false}
-
+            if (post.attachment?.type == AttachmentType.IMAGE) {
+                post.attachment.url?.let { url ->
+                    loadImage(url)
+                }
+            } else {
+                findNavController().navigateUp()
+                Snackbar.make(
+                    requireView(),
+                    R.string.error_not_an_image,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
             updateLikeIcon(post.likedByMe)
-
             setupBottomAppBar(post)
         }
     }
 
     private fun loadImage(url: String) {
-        Glide.with(binding.postImage)
-                        .load("http://10.0.2.2:9999/media/$url")
-                        .placeholder(R.drawable.baseline_loading_24)
-                        .error(R.drawable.baseline_error_24)
-                        .timeout(10_000)
-                        .into(binding.postImage)
-                    binding.postImage.isVisible = true
+        if (url.isNotBlank()) {
+            Glide.with(binding.postImage)
+                .load("http://10.0.2.2:9999/media/$url")
+                .placeholder(R.drawable.baseline_loading_24)
+                .error(R.drawable.baseline_error_24)
+                .timeout(10_000)
+                .into(binding.postImage)
+            binding.postImage.isVisible = true
+        } else {
+            binding.postImage.isVisible = false
+            Snackbar.make(
+                binding.root,
+                R.string.error_invalid_image_url,
+                Snackbar.LENGTH_SHORT
+            ).show()
+            findNavController().navigateUp()
+        }
     }
 
     private fun updateLikeIcon(liked: Boolean) {
@@ -98,3 +116,5 @@ class ImageFragment : Fragment() {
         _binding = null
     }
 }
+
+

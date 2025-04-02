@@ -35,6 +35,10 @@
     <string name="description_photo">Photo</string>
     <string name="remove">Remove</string>
 
+    <string name="error_invalid_image">Opened image error</string>
+    <string name="error_invalid_image_url">Invalid image URL error</string>
+    <string name="error_not_an_image">It is not image error</string>
+
 
 
 </resources>

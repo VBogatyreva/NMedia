@@ -122,7 +122,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     fun edit(post: FeedFragment.Post) {
         edited.value?.let {
             edited.value = post
@@ -165,6 +164,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun selectPost(post: FeedFragment.Post) {
+        _currentPost.value = post
+    }
+
     fun clearSelectedPost() {
         _currentPost.value = null
     }
@@ -185,3 +188,4 @@ private val empty = FeedFragment.Post(
     hiddenPosts = true,
     attachment = null
 )
+
