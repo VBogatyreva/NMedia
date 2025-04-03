@@ -108,7 +108,16 @@ class PostsAdapter(
                     }.show()
                 }
 
-                postImage.visibility = if (post.attachment?.type == AttachmentType.IMAGE && !post.attachment.url.isNullOrEmpty()) View.VISIBLE else View.GONE
+                postImage.visibility = if (post.attachment?.type == AttachmentType.IMAGE && !post.attachment.url.isNullOrEmpty()) {
+                    Glide.with(binding.postImage)
+                        .load("http://10.0.2.2:9999/media/${post.attachment?.url}")
+                        .placeholder(R.drawable.baseline_loading_24)
+                        .error(R.drawable.baseline_error_24)
+                        .timeout(10_000)
+                        .into(binding.postImage)
+                    View.VISIBLE
+                } else { View.GONE }
+
                 postImage.setOnClickListener {
                     if (post.attachment?.type == AttachmentType.IMAGE && !post.attachment.url.isNullOrEmpty()) {
                         onInteractionListener.onImage(post)
