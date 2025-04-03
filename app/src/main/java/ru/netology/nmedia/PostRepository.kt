@@ -17,6 +17,8 @@ interface PostRepository {
     suspend fun saveWithAttachment(post: FeedFragment.Post, upload: MediaUpload)
     suspend fun uploadMedia(upload: MediaUpload): Media
 
+    suspend fun authenticate(login: String, password: String): AuthModel
+
     suspend fun getPostById(id: Long?): FeedFragment.Post?
     suspend fun shareById(id:Long)
     suspend fun sawById(id:Long)

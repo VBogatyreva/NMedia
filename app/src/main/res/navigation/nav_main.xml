@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_feedFragment_to_imageFragment"
             app:destination="@id/imageFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_authFragment"
+            app:destination="@id/authFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -37,6 +40,17 @@
         <action
             android:id="@+id/action_onePostFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="ru.netology.nmedia.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth">
+
+        <action
+            android:id="@+id/action_authFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
     </fragment>
 
 </navigation>

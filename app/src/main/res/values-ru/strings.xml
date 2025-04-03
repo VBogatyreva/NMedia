@@ -41,5 +41,9 @@
     <string name="error_invalid_image">Невозможно открыть изображение</string>
     <string name="error_invalid_image_url">Неверный URL изображения</string>
     <string name="error_not_an_image">Это вложение не является изображением</string>
+    <string name="Login">Логин</string>
+    <string name="Password">Пароль</string>
+    <string name="Sign_In">Войти</string>
+    <string name="sign_in">Sign in</string>
 
 </resources>

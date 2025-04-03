@@ -10,4 +10,8 @@
         android:id = "@+id/edit"
         android:title="@string/menu_edit"/>
 
+    <item
+        android:id = "@+id/sign_in"
+        android:title="@string/sign_in"/>
+
 </menu>

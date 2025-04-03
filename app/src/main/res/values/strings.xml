@@ -40,5 +40,10 @@
     <string name="error_not_an_image">It is not image error</string>
 
 
+    <string name="Login">Login</string>
+    <string name="Password">Password</string>
+    <string name="Sign_In">Sign in</string>
+    <string name="sign_in">Sign in</string>
+
 
 </resources>

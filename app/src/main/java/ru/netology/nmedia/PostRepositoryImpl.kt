@@ -147,6 +147,14 @@ class PostRepositoryImpl(private val dao: PostDao) : PostRepository {
         }
     }
 
+    override suspend fun authenticate(login: String, password: String): AuthModel {
+        val response = PostApi.retrofitService.authenticate(login, password)
+        if (!response.isSuccessful) {
+            throw ApiError(response.code(), response.message())
+        }
+        return response.body() ?: throw ApiError(response.code(), response.message())
+    }
+
     override suspend fun getPostById(id: Long?): FeedFragment.Post? {
         return if(id!=null) dao.getById(id).toDto() else null
     }
