@@ -1,8 +1,14 @@
 package ru.netology.nmedia
 
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
+import okio.IOException
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -66,5 +72,34 @@ interface PostApiService {
 object PostApi {
     val retrofitService: PostApiService by lazy {
         retrofit.create(PostApiService::class.java)
+    }
+
+    fun sendTestPush(token: String, recipientId: Long?) {
+        val client = OkHttpClient()
+
+        val json = """
+        {
+            "recipientId": ${recipientId ?: "null"},
+            "action": "NEW_POST",
+            "content": "{\"userId\":1,\"userName\":\"Test User\",\"postId\":123,\"content\":\"Test content\"}"
+        }
+    """.trimIndent()
+
+        val requestBody = json.toRequestBody("application/json".toMediaType())
+
+        val request = Request.Builder()
+            .url("http://localhost:9999/api/pushes?token=$token")
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("Failed to send test push: ${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                println("Test push sent: ${response.code}")
+            }
+        })
     }
 }

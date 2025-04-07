@@ -88,6 +88,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-base:18.5.0")
     implementation ("com.google.firebase:firebase-messaging-ktx")
     implementation ("com.google.firebase:firebase-messaging:24.1.0")
+    implementation ("com.google.firebase:firebase-analytics-ktx")
     implementation ("com.google.code.gson:gson:2.10.1")
 
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
@@ -102,5 +103,8 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation ("com.github.dhaval2404:imagepicker:2.1")
+
+
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
 }

@@ -3,11 +3,13 @@ package ru.netology.nmedia
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -19,6 +21,12 @@ class FCMService : FirebaseMessagingService() {
     private val content = "content"
     private val channelId = "remote"
     private val gson = Gson()
+
+    private val auth: AppAuth by lazy {
+        AppAuth(
+            getSharedPreferences("auth", Context.MODE_PRIVATE)
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -38,26 +46,54 @@ class FCMService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
 
         try {
+            val pushMessage = gson.fromJson(
+                message.data[content],
+                PushMessage::class.java
+            )
 
-            message.data[action]?.let {
-                when (Action.valueOf(it)) {
-                    Action.LIKE -> handleLike(
-                        gson.fromJson(
-                            message.data[content],
-                            Like::class.java
-                        )
-                    )
-
-                    Action.NEW_POST -> handleNewPost(
-                        gson.fromJson(
-                            message.data[content],
-                            NewPost::class.java
-                        )
-                    )
+            when {
+                // Массовая рассылка - показываем уведомление
+                pushMessage.recipientId == null -> {
+                    processNotification(message)
+                }
+                // Получатель совпадает с текущим пользователем
+                pushMessage.recipientId == auth.authStateFlow.value.id -> {
+                    processNotification(message)
+                }
+                // Сервер считает что у нас анонимная аутентификация (recipientId = 0)
+                pushMessage.recipientId == 0L -> {
+                    FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                        println("Resending token due to recipientId=0: $token")
+                    }
+                }
+                // Сервер считает что у нас другая аутентификация
+                else -> {
+                    FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                        println("Resending token due to recipientId mismatch: $token")
+                    }
                 }
             }
         } catch (error: IllegalArgumentException) {
             errorNotification(gson.fromJson(message.data[content], Notification::class.java))
+        }
+    }
+
+    private fun processNotification(message: RemoteMessage) {
+        message.data[action]?.let { action ->
+            when (Action.valueOf(action)) {
+                Action.LIKE -> handleLike(
+                    gson.fromJson(
+                        message.data[content],
+                        Like::class.java
+                    )
+                )
+                Action.NEW_POST -> handleNewPost(
+                    gson.fromJson(
+                        message.data[content],
+                        NewPost::class.java
+                    )
+                )
+            }
         }
     }
 

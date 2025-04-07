@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,8 +24,24 @@ class AppActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
             println("Current token: $it")
+
+            if (BuildConfig.DEBUG) {
+                PostApi.sendTestPush(
+                    token = it,
+                    recipientId = null
+                )
+
+                Toast.makeText(
+                    this,
+                    "Test push sent",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }.addOnFailureListener {
+            Log.e("AppActivity", "Token receipt error", it)
         }
 
         val binding = ActivityAppBinding.inflate(layoutInflater)
