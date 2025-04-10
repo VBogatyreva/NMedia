@@ -11,8 +11,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.databinding.FragmentImageBinding
 
+@AndroidEntryPoint
 class ImageFragment : Fragment() {
 
     private val viewModel: PostViewModel by activityViewModels()
@@ -116,5 +118,3 @@ class ImageFragment : Fragment() {
         _binding = null
     }
 }
-
-

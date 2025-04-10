@@ -69,5 +69,3 @@ class Converters {
     @TypeConverter
     fun fromAttachmentType(value: AttachmentType) = value.name
 }
-
-

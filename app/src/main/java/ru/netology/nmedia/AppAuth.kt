@@ -4,7 +4,9 @@ import android.content.SharedPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AppAuth @Inject constructor(
     private val prefs: SharedPreferences
 ) {

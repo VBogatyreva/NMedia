@@ -15,18 +15,22 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import java.io.File
 import java.io.FileOutputStream
 
+@AndroidEntryPoint
 class NewPostFragment : Fragment() {
 
-    private val viewModel: PostViewModel by activityViewModels()
+    private val viewModel: PostViewModel by viewModels(
+        ownerProducer = :: requireParentFragment
+    )
 
     private var fragmentBinding: FragmentNewPostBinding? = null
 
@@ -147,9 +151,3 @@ class NewPostFragment : Fragment() {
         var Bundle.textArg: String? by StringArg
     }
 }
-
-
-
-
-
-

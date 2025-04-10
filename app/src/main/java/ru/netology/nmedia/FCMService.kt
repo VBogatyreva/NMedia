@@ -3,7 +3,6 @@ package ru.netology.nmedia
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
@@ -13,20 +12,20 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class FCMService : FirebaseMessagingService() {
+
+    @Inject
+    lateinit var auth: AppAuth
 
     private val action = "action"
     private val content = "content"
     private val channelId = "remote"
     private val gson = Gson()
-
-    private val auth: AppAuth by lazy {
-        AppAuth(
-            getSharedPreferences("auth", Context.MODE_PRIVATE)
-        )
-    }
 
     override fun onCreate() {
         super.onCreate()
