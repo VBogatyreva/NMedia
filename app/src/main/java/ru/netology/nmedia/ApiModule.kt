@@ -22,7 +22,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideAppAuth(prefs: SharedPreferences): AppAuth = AppAuth(prefs)
+    fun provideAuthHolder(prefs: SharedPreferences): AuthHolder = AuthHolder(prefs)
 
     @Provides
     @Singleton
@@ -36,9 +36,17 @@ class ApiModule {
     @Singleton
     fun provideOkHttp(
         logging: HttpLoggingInterceptor,
-        appAuth: AppAuth
+        authHolder: AuthHolder
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(logging)
+        .addInterceptor { chain ->
+            val request = authHolder.authStateFlow.value.token?.let { token ->
+                chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
+            } ?: chain.request()
+            chain.proceed(request)
+        }
         .build()
 
     @Provides
@@ -55,5 +63,5 @@ class ApiModule {
     @Singleton
     fun provideApiService(
         retrofit: Retrofit
-    ): PostApiService = retrofit.create<PostApiService>()
+    ): PostApiService = retrofit.create()
 }

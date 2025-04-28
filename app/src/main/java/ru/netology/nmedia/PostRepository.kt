@@ -1,10 +1,11 @@
 package ru.netology.nmedia
 
+import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
 
-    val data: Flow<List<FeedFragment.Post>>
+    val data: Flow<PagingData<FeedFragment.Post>>
 
     suspend fun getAll()
     fun getNewerCount(id: Long): Flow<Int>
@@ -13,6 +14,8 @@ interface PostRepository {
     suspend fun unlikeById(id: Long)
     suspend fun removeById(id: Long)
     suspend fun save(post: FeedFragment.Post)
+    suspend fun refresh()
+    suspend fun clear()
 
     suspend fun saveWithAttachment(post: FeedFragment.Post, upload: MediaUpload)
     suspend fun uploadMedia(upload: MediaUpload): Media
@@ -24,3 +27,9 @@ interface PostRepository {
     suspend fun sawById(id:Long)
     suspend fun video()
 }
+
+
+
+
+
+

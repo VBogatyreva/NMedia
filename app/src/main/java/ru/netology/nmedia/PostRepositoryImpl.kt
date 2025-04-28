@@ -1,12 +1,13 @@
 package ru.netology.nmedia
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okio.IOException
@@ -17,9 +18,14 @@ class PostRepositoryImpl @Inject constructor(
     private val apiService: PostApiService
     ) : PostRepository {
 
-    override val data = dao.getAllVisible()
-        .map(List<PostEntity>::toDto)
-        .flowOn(Dispatchers.Default)
+    override var data = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = {
+            PostPagingSource(
+                apiService
+            )
+        }
+    ).flow
 
     override fun getNewerCount(id: Long): Flow<Int> = flow {
         while (true) {
@@ -53,6 +59,30 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun showAll() {
         dao.showAll()
+    }
+
+    override suspend fun refresh() {
+        try {
+            dao.clear()
+            val response = apiService.getAll()
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(body.map(PostEntity::fromDto))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun clear() {
+        try {
+            dao.clear()
+        } catch (e: Exception) {
+            throw UnknownError
+        }
     }
 
     override suspend fun likeById(id: Long) {

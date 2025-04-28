@@ -97,11 +97,23 @@ dependencies {
     implementation("com.github.dhaval2404:imagepicker:2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
-    // Hilt
     implementation("com.google.dagger:hilt-android:2.51")
     kapt("com.google.dagger:hilt-android-compiler:2.51")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
 
-    // Kotlin metadata
     implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
+
+    implementation ("androidx.paging:paging-runtime-ktx:3.1.0")
 }
+
+
+
+
+
+
+
+
+
+
+
+

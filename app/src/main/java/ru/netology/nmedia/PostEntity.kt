@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
+    val authorId: Long,
     val author: String,
     val published: String,
     val content: String,
@@ -18,6 +19,7 @@ data class PostEntity(
     val visibility: Long,
     val videoUrl: String?,
     val hiddenPosts: Boolean = true,
+    val ownedByMe: Boolean,
 
     @Embedded
     val attachment: AttachmentEmbeddable?
@@ -26,6 +28,7 @@ data class PostEntity(
 ) {
     fun toDto() = FeedFragment.Post(
         id = id,
+        authorId = authorId,
         author = author,
         published = published,
         content = content,
@@ -36,12 +39,14 @@ data class PostEntity(
         visibility = visibility,
         videoUrl = videoUrl,
         hiddenPosts = hiddenPosts,
-        attachment = attachment?.toDto()
+        attachment = attachment?.toDto(),
+        ownedByMe = ownedByMe
     )
 
     companion object {
         fun fromDto(dto: FeedFragment.Post) = PostEntity(
             dto.id,
+            dto.authorId,
             dto.author,
             dto.published,
             dto.content,
@@ -52,7 +57,9 @@ data class PostEntity(
             dto.visibility,
             dto.videoUrl,
             dto.hiddenPosts,
+            dto.ownedByMe,
             AttachmentEmbeddable.fromDto(dto.attachment)
+
             )
 
     }

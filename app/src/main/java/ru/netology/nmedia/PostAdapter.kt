@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -27,7 +27,7 @@ interface OnInteractionListener {
 class PostsAdapter(
     private val onInteractionListener: OnInteractionListener
 
-) : ListAdapter<FeedFragment.Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
+) : PagingDataAdapter<FeedFragment.Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
 
 
     override fun onCreateViewHolder (parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -36,7 +36,7 @@ class PostsAdapter(
     }
 
     override fun onBindViewHolder (holder: PostViewHolder, position: Int) {
-        val post = getItem(position)
+        val post = getItem(position)?:return
         holder.bind(post)
     }
 

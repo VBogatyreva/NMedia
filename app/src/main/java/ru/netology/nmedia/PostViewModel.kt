@@ -4,13 +4,16 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -18,12 +21,28 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
-    private val appAuth: AppAuth
+    private val authHolder: AuthHolder
 ) : ViewModel() {
 
-    val data: LiveData<FeedModel> = repository.data
-        .map(::FeedModel)
-        .asLiveData(Dispatchers.Default)
+    val data: Flow<PagingData<FeedFragment.Post>> = authHolder.authStateFlow
+        .flatMapLatest { authState ->
+            if (authState.isAuthorized) {
+                repository.data
+            } else {
+                flowOf(PagingData.empty())
+            }
+        }
+        .flowOn(Dispatchers.Default)
+
+    init {
+        authHolder.authStateFlow
+            .onEach { authState ->
+                if (authState.isAuthorized) {
+                    loadPosts()
+                }
+            }
+            .launchIn(viewModelScope)
+    }
 
     private val noPhoto = PhotoModel()
 
@@ -39,20 +58,11 @@ class PostViewModel @Inject constructor(
     val photo: LiveData<PhotoModel?>
         get() = _photo
 
-    val newerCount: LiveData<Int> = data.switchMap {
-        repository.getNewerCount(it.posts.firstOrNull()?.id ?: 0L)
-            .catch { e -> e.printStackTrace() }
-            .asLiveData(Dispatchers.Default)
-    }
 
     private val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
-
-    init {
-        loadPosts()
-    }
 
     fun getPostById(id: Long?){
         viewModelScope.launch {
@@ -97,6 +107,16 @@ class PostViewModel @Inject constructor(
     suspend fun shareById(id: Long) = repository.shareById(id)
     suspend fun sawById(id: Long) = repository.sawById(id)
     suspend fun video() = repository.video()
+
+    fun refresh() = viewModelScope.launch {
+        try {
+            _dataState.value = FeedModelState(loading = true)
+            repository.refresh()
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
 
     fun likeById(id: Long) = viewModelScope.launch {
         try {
@@ -180,6 +200,7 @@ class PostViewModel @Inject constructor(
 private val empty = FeedFragment.Post(
     id = 0,
     author = "",
+    authorId = 0,
     published = "",
     content = "",
     authorAvatar = "",
@@ -189,6 +210,7 @@ private val empty = FeedFragment.Post(
     visibility = 0,
     videoUrl = "",
     hiddenPosts = true,
-    attachment = null
+    attachment = null,
+    ownedByMe = false
 )
 

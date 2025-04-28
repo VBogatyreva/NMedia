@@ -11,11 +11,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nmedia.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 
@@ -115,13 +117,10 @@ class FeedFragment : Fragment() {
             }
         }
 
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
-            binding.emptyText.isVisible = state.empty
-        }
-
-        viewModel.newerCount.observe(viewLifecycleOwner) { state ->
-            binding.newPosts.isVisible = state > 0
+        lifecycleScope.launchWhenCreated {
+            viewModel.data.collectLatest {
+                adapter.submitData(it)
+            }
         }
 
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
@@ -151,6 +150,7 @@ class FeedFragment : Fragment() {
     data class Post(
         val id: Long,
         val author: String,
+        val authorId: Long,
         val published: String,
         val content: String,
         val authorAvatar: String,
@@ -160,7 +160,8 @@ class FeedFragment : Fragment() {
         val visibility: Long,
         val videoUrl: String?,
         val hiddenPosts: Boolean,
-        val attachment: Attachment? = null
+        val attachment: Attachment? = null,
+        val ownedByMe: Boolean = false
     )
     data class Attachment(
         val url: String,
