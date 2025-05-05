@@ -31,11 +31,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-//            manifestPlaceholders["usesCleartextTraffic"] = false
+            manifestPlaceholders["usesCleartextTraffic"] = false
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:9999\"")
         }
         debug {
-//            manifestPlaceholders["usesCleartextTraffic"] = true
+            manifestPlaceholders["usesCleartextTraffic"] = true
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:9999\"")
         }
     }
