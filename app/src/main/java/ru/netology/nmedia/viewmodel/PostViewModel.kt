@@ -9,13 +9,8 @@ import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.netology.nmedia.auth.AuthHolder
 import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.model.PhotoModel
@@ -45,28 +40,31 @@ private val empty = FeedFragment.Post(
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
-    private val authHolder: AuthHolder
+//    private val authHolder: AuthHolder
 ) : ViewModel() {
 
-    val data: Flow<PagingData<FeedFragment.Post>> = authHolder.authStateFlow
-        .flatMapLatest { authState ->
-            if (authState.isAuthorized) {
-                repository.data
-            } else {
-                flowOf(PagingData.empty())
-            }
-        }
-        .flowOn(Dispatchers.Default)
+    val data: Flow<PagingData<FeedFragment.Post>> =
+        repository.data.flowOn(Dispatchers.Default)
 
-    init {
-        authHolder.authStateFlow
-            .onEach { authState ->
-                if (authState.isAuthorized) {
-                    loadPosts()
-                }
-            }
-            .launchIn(viewModelScope)
-    }
+//    val data: Flow<PagingData<FeedFragment.Post>> = authHolder.authStateFlow
+//        .flatMapLatest { authState ->
+//            if (authState.isAuthorized) {
+//                repository.data
+//            } else {
+//                flowOf(PagingData.empty())
+//            }
+//        }
+//        .flowOn(Dispatchers.Default)
+
+//    init {
+//        authHolder.authStateFlow
+//            .onEach { authState ->
+//                if (authState.isAuthorized) {
+//                    loadPosts()
+//                }
+//            }
+//            .launchIn(viewModelScope)
+//    }
 
     private val noPhoto = PhotoModel()
 
